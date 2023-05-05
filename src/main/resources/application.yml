@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: car-workflow-cloud-app
+  boot:
+    admin:
+      client:
+        # Where the Spring boot admin resides
+        url: http://localhost:8100
+        # When shut down deregisters from spring boot admin
+        auto-deregistration: true
+server:
+  # Allow for automatic available port allocation
+  port: 0
+  error:
+    # e.g. when an 500 error is displayed will have the underlying error message
+    include-message: always
+zeebe:
+  client:
+    cloud:
+      region: ont-1
+      clusterId: 68446f73-e278-44a3-b676-04592b9bc0d3
+      clientId: WlUM2xObNLbwrBFUIDcg-R2Mj~fmJcMd
+      clientSecret: gJlMeBNPKF_JAwQwB2gQFuurLJOZxONlJOtsKMxKTpVotjBYzLLN-WTREsLjpDVu
+logging:
+  file:
+    name: car-workflow-cloud-app.log
+    max-history: 5
+    max-size: 10MB
+management:
+  endpoint:
+    env:
+      # show the values in actuator/env endpoint
+      # e.g. http://localhost:8101/actuator/env
+      show-values: ALWAYS
+    configprops:
+      # show the values in actuator/configprops endpoint
+      # e.g. http://localhost:8101/actuator/configprops
+      show-values: ALWAYS
+    health:
+      # Note show-details
+      show-details: ALWAYS
+    shutdown:
+      enabled: true
+  endpoints:
+    enabledByDefault: true
+    env:
+      # mask these values in actuator/env endpoint
+      keys-to-sanitize: password,secret
+    configprops:
+      # mask these values in actuator/configprops endpoint
+      keys-to-sanitize: password,secret
+    web:
+      exposure:
+        include: "*"
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: true
+    git:
+      # All the GIT info
+      mode: full
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
