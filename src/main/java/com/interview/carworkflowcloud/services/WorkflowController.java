@@ -25,8 +25,8 @@ public class WorkflowController {
     @PostMapping("/startProcess")
     public ProcessInstanceEventDto startProcess() {
         HashMap<String, Object> variables = new HashMap<String, Object>();
-        variables.put("automaticProcessing", true);
-        variables.put("someInput", "yeah");
+        //variables.put("automaticProcessing", true);
+        //variables.put("someInput", "yeah");
 
         ProcessInstanceEvent event = zeebeClient.newCreateInstanceCommand() //
                 .bpmnProcessId(ProcessConstants.PROCESS_NAME) //

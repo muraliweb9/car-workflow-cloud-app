@@ -29,13 +29,13 @@
         <dc:Bounds x="300" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0nubx5u_di" bpmnElement="Flow_0nubx5u">
-        <di:waypoint x="400" y="117" />
-        <di:waypoint x="502" y="117" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_058xxc9_di" bpmnElement="Flow_058xxc9">
         <di:waypoint x="215" y="117" />
         <di:waypoint x="300" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nubx5u_di" bpmnElement="Flow_0nubx5u">
+        <di:waypoint x="400" y="117" />
+        <di:waypoint x="502" y="117" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

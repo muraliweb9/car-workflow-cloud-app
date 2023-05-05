@@ -17,6 +17,7 @@ server:
 zeebe:
   client:
     cloud:
+      # Cluster URL: e.g. 68446f73-e278-44a3-b676-04592b9bc0d3.ont-1.zeebe.camunda.io
       region: ont-1
       clusterId: 68446f73-e278-44a3-b676-04592b9bc0d3
       clientId: WlUM2xObNLbwrBFUIDcg-R2Mj~fmJcMd
