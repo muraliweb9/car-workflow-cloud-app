@@ -2,40 +2,73 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_17bvesj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.10.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
   <bpmn:process id="car-workflow-cloud-app" name="Car Workflow Cloud App" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
-      <bpmn:outgoing>Flow_058xxc9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0k3fj48</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:serviceTask id="select-vehicle" name="Select Vehicle">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="selectVehicle" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_058xxc9</bpmn:incoming>
-      <bpmn:outgoing>Flow_0nubx5u</bpmn:outgoing>
+      <bpmn:incoming>Flow_1x4x06u</bpmn:incoming>
+      <bpmn:outgoing>Flow_1n7mycf</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_13s3yra">
-      <bpmn:incoming>Flow_0nubx5u</bpmn:incoming>
+      <bpmn:incoming>Flow_07459le</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0nubx5u" sourceRef="select-vehicle" targetRef="Event_13s3yra" />
-    <bpmn:sequenceFlow id="Flow_058xxc9" sourceRef="StartEvent_1" targetRef="select-vehicle" />
+    <bpmn:sequenceFlow id="Flow_1n7mycf" sourceRef="select-vehicle" targetRef="handover-vehicle" />
+    <bpmn:sequenceFlow id="Flow_07459le" sourceRef="handover-vehicle" targetRef="Event_13s3yra" />
+    <bpmn:userTask id="handover-vehicle" name="Handover Vehicle">
+      <bpmn:incoming>Flow_1n7mycf</bpmn:incoming>
+      <bpmn:outgoing>Flow_07459le</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="enter-customer-details" name="Enter Customer Details">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=firstName" target="firstName" />
+          <zeebe:output source="=lastName" target="lastName" />
+          <zeebe:output source="=licenceNumber" target="licenceNumber" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0k3fj48</bpmn:incoming>
+      <bpmn:outgoing>Flow_1x4x06u</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0k3fj48" sourceRef="StartEvent_1" targetRef="enter-customer-details" />
+    <bpmn:sequenceFlow id="Flow_1x4x06u" sourceRef="enter-customer-details" targetRef="select-vehicle" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="car-workflow-cloud-app">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_13s3yra_di" bpmnElement="Event_13s3yra">
-        <dc:Bounds x="502" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1m1kuf9_di" bpmnElement="select-vehicle">
-        <dc:Bounds x="300" y="77" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_1tabqko_di" bpmnElement="enter-customer-details">
+        <dc:Bounds x="260" y="60" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_058xxc9_di" bpmnElement="Flow_058xxc9">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="300" y="117" />
+      <bpmndi:BPMNShape id="Activity_1m1kuf9_di" bpmnElement="select-vehicle">
+        <dc:Bounds x="470" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_075jvmu_di" bpmnElement="handover-vehicle">
+        <dc:Bounds x="680" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_13s3yra_di" bpmnElement="Event_13s3yra">
+        <dc:Bounds x="902" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1n7mycf_di" bpmnElement="Flow_1n7mycf">
+        <di:waypoint x="570" y="100" />
+        <di:waypoint x="680" y="100" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0nubx5u_di" bpmnElement="Flow_0nubx5u">
-        <di:waypoint x="400" y="117" />
-        <di:waypoint x="502" y="117" />
+      <bpmndi:BPMNEdge id="Flow_07459le_di" bpmnElement="Flow_07459le">
+        <di:waypoint x="780" y="100" />
+        <di:waypoint x="902" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k3fj48_di" bpmnElement="Flow_0k3fj48">
+        <di:waypoint x="198" y="100" />
+        <di:waypoint x="260" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x4x06u_di" bpmnElement="Flow_1x4x06u">
+        <di:waypoint x="360" y="100" />
+        <di:waypoint x="470" y="100" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

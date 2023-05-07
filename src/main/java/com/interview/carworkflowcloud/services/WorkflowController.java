@@ -1,17 +1,26 @@
 package com.interview.carworkflowcloud.services;
 
 import com.interview.carworkflowcloud.consts.ProcessConstants;
+import com.interview.carworkflowcloud.data.CustomerDetails;
 import com.interview.carworkflowcloud.data.ProcessInstanceEventDto;
+import com.interview.carworkflowcloud.data.TaskDetails;
+import com.interview.carworkflowcloud.repository.TaskRepository;
 import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/carworkflowcloud")
@@ -22,16 +31,17 @@ public class WorkflowController {
     @Autowired
     private ZeebeClient zeebeClient;
 
+    @Autowired
+    private TaskRepository taskRepository;
+
     @PostMapping("/startProcess")
     public ProcessInstanceEventDto startProcess() {
         HashMap<String, Object> variables = new HashMap<String, Object>();
-        //variables.put("automaticProcessing", true);
-        //variables.put("someInput", "yeah");
 
-        ProcessInstanceEvent event = zeebeClient.newCreateInstanceCommand() //
-                .bpmnProcessId(ProcessConstants.PROCESS_NAME) //
-                .latestVersion() //
-                .variables(variables) //
+        ProcessInstanceEvent event = zeebeClient.newCreateInstanceCommand()
+                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
+                .latestVersion()
+                .variables(variables)
                 .send().join();
         return ProcessInstanceEventDto.builder()
                 .processDefinitionKey(event.getProcessDefinitionKey())
@@ -41,5 +51,37 @@ public class WorkflowController {
                 .build();
     }
 
+    @PostMapping("enterCustomerDetails/{processInstanceId}")
+    public void enterCustomerDetails(@PathVariable String processInstanceId, @RequestBody CustomerDetails customerDetails) {
+        String firstName = customerDetails.getFirstName();
+        String lastName = customerDetails.getLastName();
+        String licenceNumber = customerDetails.getLicenceNumber();
 
+        Map<String, Object> variables = Map.of(
+                "firstName", firstName,
+                "lastName", lastName,
+                "licenceNumber", licenceNumber);
+
+        Optional<TaskDetails> taskDetailsOpt
+                = taskRepository.findByProcessIdAndTaskIdAndProcessInstanceId(
+                        ProcessConstants.PROCESS_NAME,
+                        ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
+                        Long.valueOf(processInstanceId));
+
+        if (taskDetailsOpt.isPresent()) {
+            Long jobKey = taskDetailsOpt.get().getId();
+            CompleteJobResponse response = zeebeClient
+                    .newCompleteCommand(jobKey)
+                    .variables(variables)
+                    .send().join();
+        }
+
+        CompleteJobResponse response = zeebeClient
+                .newCompleteCommand(null)
+                .variables(variables)
+                .send().join();
+
+
+
+    }
 }

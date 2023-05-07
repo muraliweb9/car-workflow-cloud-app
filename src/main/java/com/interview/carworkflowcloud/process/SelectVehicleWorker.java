@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SelectVehicleWorker {
 
-    @JobWorker(type="selectVehicle")
+    @JobWorker(type = "selectVehicle")
     public void selectVehicle() {
         log.info("Vehicle has been selected !!!!!");
     }
