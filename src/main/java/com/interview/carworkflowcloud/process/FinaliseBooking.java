@@ -36,9 +36,7 @@ public class FinaliseBooking {
 
         log.info("Running FinaliseBooking !!");
 
-        String licenseNumber = ObjectUtils.nullSafeToString("licenceNumber");
-
-        if (StringUtils.isBlank(licenseNumber) || "null".equals(licenseNumber)) {
+        if (StringUtils.isBlank(licenceNumber) || "null".equals(licenceNumber)) {
             throw ErrorCode.FINALISE_FAILURE.bpmnError();
         }
 
