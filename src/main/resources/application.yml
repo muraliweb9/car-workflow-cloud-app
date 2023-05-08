@@ -19,9 +19,9 @@ zeebe:
     cloud:
       # Cluster URL: e.g. 68446f73-e278-44a3-b676-04592b9bc0d3.ont-1.zeebe.camunda.io
       region: ont-1
-      clusterId: 4b0f7456-88bb-4613-84a8-af82f74f904e
-      clientId: QVgpwHppM6ECySAIbJdOB4cVGmJM1IkI
-      clientSecret: YVJA8iviO.-vFfnohMROGL5BoKlWMjSUdn3wiPR-cyNMaKLzzq-luwM4XKF6q_Sd
+      clusterId: 1239c677-72fe-4c01-aa68-f9e4efded802
+      clientId: XyeybWkT~R.u2CRq8cw-uYchxk2jYE1U
+      clientSecret: RkqIjurRjEqDXgHo-CA~5Sh4Y~JI0Rlj2zR6CWP_LwMn9MWLgWH9rlEE11EGyp.~
 logging:
   file:
     name: car-workflow-cloud-app.log

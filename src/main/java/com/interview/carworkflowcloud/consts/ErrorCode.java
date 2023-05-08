@@ -1,5 +1,6 @@
 package com.interview.carworkflowcloud.consts;
 
+import io.camunda.zeebe.spring.client.exception.ZeebeBpmnError;
 import lombok.Getter;
 
 @Getter
@@ -14,6 +15,10 @@ public enum ErrorCode {
     private ErrorCode(String errCode, String errMessage) {
         this.errCode = errCode;
         this.errMessage = errMessage;
+    }
+
+    public ZeebeBpmnError bpmnError() {
+        return new ZeebeBpmnError(errCode, errMessage);
     }
 
 }

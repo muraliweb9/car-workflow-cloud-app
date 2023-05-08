@@ -3,7 +3,9 @@ package com.interview.carworkflowcloud.services;
 import com.interview.carworkflowcloud.consts.ProcessConstants;
 import com.interview.carworkflowcloud.data.CustomerDetails;
 import com.interview.carworkflowcloud.data.ProcessInstanceEventDto;
+import com.interview.carworkflowcloud.data.RestApiResult;
 import com.interview.carworkflowcloud.data.TaskDetails;
+import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
 import com.interview.carworkflowcloud.repository.TaskRepository;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -52,7 +54,7 @@ public class WorkflowController {
     }
 
     @PostMapping("enterCustomerDetails/{processInstanceId}")
-    public void enterCustomerDetails(@PathVariable String processInstanceId, @RequestBody CustomerDetails customerDetails) {
+    public RestApiResult enterCustomerDetails(@PathVariable String processInstanceId, @RequestBody CustomerDetails customerDetails) {
         String firstName = customerDetails.getFirstName();
         String lastName = customerDetails.getLastName();
         String licenceNumber = customerDetails.getLicenceNumber();
@@ -64,9 +66,9 @@ public class WorkflowController {
 
         Optional<TaskDetails> taskDetailsOpt
                 = taskRepository.findByProcessIdAndTaskIdAndProcessInstanceId(
-                        ProcessConstants.PROCESS_NAME,
-                        ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
-                        Long.valueOf(processInstanceId));
+                ProcessConstants.PROCESS_NAME,
+                ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
+                Long.valueOf(processInstanceId));
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
@@ -74,14 +76,48 @@ public class WorkflowController {
                     .newCompleteCommand(jobKey)
                     .variables(variables)
                     .send().join();
+            return RestApiResult.COMPLETED_OK;
+        } else {
+            log.error("Unable to enter customer details task not found - processId [{}], " +
+                            "taskId [{}], " +
+                            "processInstanceId [{}]",
+                    ProcessConstants.PROCESS_NAME,
+                    ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
+                    processInstanceId);
+            return RestApiResult.COMPLETED_FAILED;
         }
+    }
 
-        CompleteJobResponse response = zeebeClient
-                .newCompleteCommand(null)
-                .variables(variables)
-                .send().join();
+    @PostMapping("vehicleHandover/{processInstanceId}")
+    public RestApiResult vehicleHandover(@PathVariable String processInstanceId,
+                                         @RequestBody VehicleHandoverDetails vehicleHandoverDetails) {
+
+        boolean allChecksDone = vehicleHandoverDetails.allChecksDone();
 
 
+        Map<String, Object> variables = Map.of("allChecksDone", Boolean.valueOf(allChecksDone));
 
+        Optional<TaskDetails> taskDetailsOpt
+                = taskRepository.findByProcessIdAndTaskIdAndProcessInstanceId(
+                ProcessConstants.PROCESS_NAME,
+                ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
+                Long.valueOf(processInstanceId));
+
+        if (taskDetailsOpt.isPresent()) {
+            Long jobKey = taskDetailsOpt.get().getId();
+            CompleteJobResponse response = zeebeClient
+                    .newCompleteCommand(jobKey)
+                    .variables(variables)
+                    .send().join();
+            return RestApiResult.COMPLETED_OK;
+        } else {
+            log.error("Unable to handover vehicle task not found - processId [{}], " +
+                            "taskId [{}], " +
+                            "processInstanceId [{}]",
+                    ProcessConstants.PROCESS_NAME,
+                    ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
+                    processInstanceId);
+            return RestApiResult.COMPLETED_FAILED;
+        }
     }
 }

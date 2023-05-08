@@ -1,10 +1,11 @@
 package com.interview.carworkflowcloud.process;
 
+import com.interview.carworkflowcloud.consts.ErrorCode;
 import com.interview.carworkflowcloud.data.TaskDetails;
 import com.interview.carworkflowcloud.repository.TaskRepository;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
-import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import io.camunda.zeebe.spring.client.exception.ZeebeBpmnError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,13 +13,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class EnterCustomerDetailsWorker {
+public class UserTaskWorker {
 
     @Autowired
     private TaskRepository taskRepository;
 
     @JobWorker(type ="io.camunda.zeebe:userTask", autoComplete = false)
-    public void enterCustomerDetails(final ActivatedJob job) {
+    public void handleUserTask(final ActivatedJob job) {
         Long taskKey = job.getKey();
         String processId = job.getBpmnProcessId();
         Long processInstanceId = job.getProcessInstanceKey();
@@ -30,6 +31,8 @@ public class EnterCustomerDetailsWorker {
                 .taskId(taskId)
                 .processInstanceId(processInstanceId)
                 .build();
+
+        //throw ErrorCode.FINALISE_FAILURE.bpmnError();
 
         taskRepository.save(taskDetails);
     }
