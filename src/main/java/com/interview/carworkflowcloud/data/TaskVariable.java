@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class TaskVariable {
 
-        private String key;
-        private Object value;
+    private String key;
+    private Object value;
 }

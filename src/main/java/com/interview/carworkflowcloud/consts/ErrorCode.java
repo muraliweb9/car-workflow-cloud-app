@@ -12,7 +12,7 @@ public enum ErrorCode {
     String errCode;
     String errMessage;
 
-    private ErrorCode(String errCode, String errMessage) {
+    ErrorCode(String errCode, String errMessage) {
         this.errCode = errCode;
         this.errMessage = errMessage;
     }

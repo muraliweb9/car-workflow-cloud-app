@@ -8,7 +8,6 @@ import com.interview.carworkflowcloud.data.TaskDetails;
 import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
 import com.interview.carworkflowcloud.repository.TaskRepository;
 import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import lombok.extern.slf4j.Slf4j;

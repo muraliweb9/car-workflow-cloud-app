@@ -6,7 +6,7 @@ public enum RestApiResult {
     COMPLETED_FAILED("Task not found"),
     INCOMPLETE("Fail");
 
-    private String message;
+    private final String message;
 
     RestApiResult(String message) {
         this.message = message;
