@@ -10,7 +10,5 @@ public class ProcessInstanceEventDto {
     long processDefinitionKey;
     String bpmnProcessId;
     int version;
-
     long processInstanceKey;
-
 }
