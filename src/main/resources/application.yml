@@ -3,7 +3,7 @@ spring:
     name: car-workflow-cloud-app
     custom:
       config:
-        taskService: api
+        taskService: api # api or repo
   boot:
     admin:
       client:

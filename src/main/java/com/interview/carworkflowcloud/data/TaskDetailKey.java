@@ -7,7 +7,9 @@ import lombok.Data;
 @Builder
 public class TaskDetailKey {
 
-    private String processInstanceKey;
+    String processDefinitionKey;
 
     private String taskDefinitionId;
+
+    private String processInstanceKey;
 }

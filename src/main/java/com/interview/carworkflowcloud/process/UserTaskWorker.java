@@ -18,13 +18,13 @@ public class UserTaskWorker {
     @JobWorker(type = "io.camunda.zeebe:userTask", autoComplete = false)
     public void handleUserTask(final ActivatedJob job) {
         Long taskKey = job.getKey();
-        String processId = job.getBpmnProcessId();
+        String processDefinitionKey = String.valueOf(job.getProcessDefinitionKey());
         String processInstanceKey = String.valueOf(job.getProcessInstanceKey());
         String taskDefinitionId = job.getElementId();
 
         TaskDetail taskDetail = TaskDetail.builder()
                 .id(taskKey)
-                .processDefinitionKey(processId)
+                .processDefinitionKey(processDefinitionKey)
                 .taskDefinitionId(taskDefinitionId)
                 .processInstanceKey(processInstanceKey)
                 .build();

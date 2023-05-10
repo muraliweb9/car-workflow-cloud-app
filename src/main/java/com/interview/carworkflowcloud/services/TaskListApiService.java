@@ -2,8 +2,7 @@ package com.interview.carworkflowcloud.services;
 
 import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.data.TaskDetailKey;
-import com.interview.carworkflowcloud.data.oauth.AccessTokenRequest;
-import com.interview.carworkflowcloud.data.oauth.AccessTokenResponse;
+import com.interview.carworkflowcloud.data.oauth.AccessToken;
 import com.interview.carworkflowcloud.data.oauth.OAuthAudiance;
 import java.util.Collections;
 import java.util.List;
@@ -29,24 +28,24 @@ public class TaskListApiService implements TaskListService {
     @Autowired
     private ClusterDetails clusterDetails;
 
-    public Optional<TaskDetail> getTaskDetails(String taskDefinitionId, String processInstanceKey) {
+    @Autowired
+    private AccessTokenCache accessTokenCache;
 
-        AccessTokenRequest tokenRequest = AccessTokenRequest.from(clusterDetails, OAuthAudiance.TASKLIST);
-        String uri = clusterDetails.getOAuthUrl();
+    public Optional<TaskDetail> getTaskDetails(
+            String processDefinitionKey, String taskDefinitionId, String processInstanceKey) {
 
-        AccessTokenResponse accessTokenResponse =
-                restTemplate.postForObject(uri, tokenRequest, AccessTokenResponse.class);
-        String accessToken = accessTokenResponse.getAccessToken();
+        AccessToken accessToken = accessTokenCache.getAccessToken(OAuthAudiance.TASKLIST);
 
         TaskDetailKey taskDetailKey = TaskDetailKey.builder()
-                .processInstanceKey(processInstanceKey)
+                .processDefinitionKey(processDefinitionKey)
                 .taskDefinitionId(taskDefinitionId)
+                .processInstanceKey(processInstanceKey)
                 .build();
         String taskSearchUri = clusterDetails.getTaskSearchUrl();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(accessToken);
+        headers.setBearerAuth(accessToken.getAccessToken());
 
         HttpEntity<TaskDetailKey> httpEntity = new HttpEntity<>(taskDetailKey, headers);
 

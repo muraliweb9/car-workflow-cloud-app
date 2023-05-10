@@ -30,12 +30,6 @@ public class WorkflowController {
     @Autowired
     private ZeebeClient zeebeClient;
 
-    // @Autowired
-    // private TaskRepository taskRepository;
-
-    // @Autowired
-    // private TaskListApiService taskListApiService;
-
     @Autowired
     private TaskListService taskListService;
 
@@ -58,9 +52,11 @@ public class WorkflowController {
                 .build();
     }
 
-    @PostMapping("enterCustomerDetails/{processInstanceId}")
+    @PostMapping("enterCustomerDetails/{processDefinitionKey}/{processInstanceId}")
     public RestApiResult enterCustomerDetails(
-            @PathVariable String processInstanceId, @RequestBody CustomerDetails customerDetails) {
+            @PathVariable String processDefinitionKey,
+            @PathVariable String processInstanceId,
+            @RequestBody CustomerDetails customerDetails) {
         String firstName = customerDetails.getFirstName();
         String lastName = customerDetails.getLastName();
         String licenceNumber = customerDetails.getLicenceNumber();
@@ -70,8 +66,8 @@ public class WorkflowController {
                 "lastName", lastName,
                 "licenceNumber", licenceNumber);
 
-        Optional<TaskDetail> taskDetailsOpt =
-                taskListService.getTaskDetails(ProcessConstants.CUSTOMER_DETAILS_TASK_NAME, processInstanceId);
+        Optional<TaskDetail> taskDetailsOpt = taskListService.getTaskDetails(
+                processDefinitionKey, ProcessConstants.CUSTOMER_DETAILS_TASK_NAME, processInstanceId);
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
@@ -92,16 +88,18 @@ public class WorkflowController {
         }
     }
 
-    @PostMapping("vehicleHandover/{processInstanceId}")
+    @PostMapping("vehicleHandover/{processDefinitionKey}/{processInstanceId}")
     public RestApiResult vehicleHandover(
-            @PathVariable String processInstanceId, @RequestBody VehicleHandoverDetails vehicleHandoverDetails) {
+            @PathVariable String processInstanceId,
+            @PathVariable String processDefinitionKey,
+            @RequestBody VehicleHandoverDetails vehicleHandoverDetails) {
 
         boolean allChecksDone = vehicleHandoverDetails.allChecksDone();
 
         Map<String, Object> variables = Map.of("allChecksDone", Boolean.valueOf(allChecksDone));
 
-        Optional<TaskDetail> taskDetailsOpt =
-                taskListService.getTaskDetails(ProcessConstants.HANDOVER_VEHICLE_TASK_NAME, processInstanceId);
+        Optional<TaskDetail> taskDetailsOpt = taskListService.getTaskDetails(
+                processDefinitionKey, ProcessConstants.HANDOVER_VEHICLE_TASK_NAME, processInstanceId);
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();

@@ -1,6 +1,5 @@
 package com.interview.carworkflowcloud.services;
 
-import com.interview.carworkflowcloud.consts.ProcessConstants;
 import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.repository.TaskRepository;
 import java.util.Optional;
@@ -15,11 +14,12 @@ public class TaskListRepositoryService implements TaskListService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Optional<TaskDetail> getTaskDetails(String taskDefinitionId, String processInstanceKey) {
+    public Optional<TaskDetail> getTaskDetails(
+            String processDefinitionKey, String taskDefinitionId, String processInstanceKey) {
 
         Optional<TaskDetail> taskDetailsOpt =
                 taskRepository.findByProcessDefinitionKeyAndTaskDefinitionIdAndProcessInstanceKey(
-                        ProcessConstants.PROCESS_NAME, taskDefinitionId, processInstanceKey);
+                        processDefinitionKey, taskDefinitionId, processInstanceKey);
 
         return taskDetailsOpt;
     }
