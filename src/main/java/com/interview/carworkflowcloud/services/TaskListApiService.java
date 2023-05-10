@@ -2,20 +2,26 @@ package com.interview.carworkflowcloud.services;
 
 import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.data.TaskDetailKey;
-import com.interview.carworkflowcloud.data.TaskDetails;
 import com.interview.carworkflowcloud.data.oauth.AccessTokenRequest;
 import com.interview.carworkflowcloud.data.oauth.AccessTokenResponse;
 import com.interview.carworkflowcloud.data.oauth.OAuthAudiance;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class TaskListApiService {
+@ConditionalOnProperty(prefix = "spring.application.custom.config", name = "taskService", havingValue = "api")
+public class TaskListApiService implements TaskListService {
 
     @Autowired
     public RestTemplate restTemplate;
@@ -23,7 +29,7 @@ public class TaskListApiService {
     @Autowired
     private ClusterDetails clusterDetails;
 
-    public TaskDetail getTaskDetails(String processInstanceKey, String taskDefinitionId) {
+    public Optional<TaskDetail> getTaskDetails(String taskDefinitionId, String processInstanceKey) {
 
         AccessTokenRequest tokenRequest = AccessTokenRequest.from(clusterDetails, OAuthAudiance.TASKLIST);
         String uri = clusterDetails.getOAuthUrl();
@@ -31,9 +37,6 @@ public class TaskListApiService {
         AccessTokenResponse accessTokenResponse =
                 restTemplate.postForObject(uri, tokenRequest, AccessTokenResponse.class);
         String accessToken = accessTokenResponse.getAccessToken();
-
-        // String accessToken =
-        // "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlFVVXdPVFpDUTBVM01qZEVRME0wTkRFelJrUkJORFk0T0RZeE1FRTBSa1pFUlVWRVF6bERNZyJ9.eyJodHRwczovL2NhbXVuZGEuY29tL29yZ0lkIjoiMjg5MzAyZWQtZjE3NC00NDg3LTgxYmQtYzdjMDM2MDAxMmJkIiwiaXNzIjoiaHR0cHM6Ly93ZWJsb2dpbi5jbG91ZC5jYW11bmRhLmlvLyIsInN1YiI6Im13bzkwdDJyMzE2MDd6MzZCTkg2OXRXRktCWDU1ajFXQGNsaWVudHMiLCJhdWQiOiJ0YXNrbGlzdC5jYW11bmRhLmlvIiwiaWF0IjoxNjgzNjQyMjMyLCJleHAiOjE2ODM3Mjg2MzIsImF6cCI6Im13bzkwdDJyMzE2MDd6MzZCTkg2OXRXRktCWDU1ajFXIiwic2NvcGUiOiIxMjM5YzY3Ny03MmZlLTRjMDEtYWE2OC1mOWU0ZWZkZWQ4MDIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.OwOk4rfIJy3Z7D5h_T1EjUzfOeSSJQOs0cmmKbx9gXuEO2nT-9vkvjD6pOe0B50wQT7jyXkbkGbpNc-sJiFmV-JCzaevIN59-BIqyvVE_BiWTTY_RgQ2NkuWY4RQSDpyW-iZXSd62S08Vh0sFPRphjpkhcKrE18gMntXo_y4WmoEbjyMd8lfMsUMLBgBKx5-RnhrQFkl5x1zql7wJkHBKYx9HqmsDPqBeerF-rrjoyg5W8eWpn9mkXbaat1x51ddMI3yAfLG6_-eDwidNKbETF5a8aHOcatOHdwcNp_5BoI3N-qo4Ik53XPcex_vY2eKHSVbC80VSQwlpvrmfZwyxg";
 
         TaskDetailKey taskDetailKey = TaskDetailKey.builder()
                 .processInstanceKey(processInstanceKey)
@@ -47,9 +50,18 @@ public class TaskListApiService {
 
         HttpEntity<TaskDetailKey> httpEntity = new HttpEntity<>(taskDetailKey, headers);
 
-        TaskDetails taskDetails = restTemplate
-                .postForEntity(taskSearchUri, httpEntity, TaskDetails.class)
-                .getBody();
-        return taskDetails.getTaskDetails().get(0);
+        //        TaskDetail[] taskDetails = restTemplate
+        //                .postForEntity(taskSearchUri, httpEntity, TaskDetail[].class)
+        //                .getBody();
+        //        return taskDetails[0];
+
+        ResponseEntity<List<TaskDetail>> taskDetailsResp = restTemplate.exchange(
+                taskSearchUri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<List<TaskDetail>>() {});
+
+        List<TaskDetail> taskListDetails = taskDetailsResp.getBody();
+
+        return (taskListDetails != null && taskListDetails.size() > 0
+                ? Optional.of(taskListDetails.get(0))
+                : Optional.empty());
     }
 }

@@ -24,7 +24,7 @@ public class UserTaskWorker {
 
         TaskDetail taskDetail = TaskDetail.builder()
                 .id(taskKey)
-                .processId(processId)
+                .processDefinitionKey(processId)
                 .taskDefinitionId(taskDefinitionId)
                 .processInstanceKey(processInstanceKey)
                 .build();

@@ -1,6 +1,9 @@
 spring:
   application:
     name: car-workflow-cloud-app
+    custom:
+      config:
+        taskService: api
   boot:
     admin:
       client:
@@ -8,6 +11,7 @@ spring:
         url: http://localhost:8100
         # When shut down deregisters from spring boot admin
         auto-deregistration: true
+
 server:
   # Allow for automatic available port allocation
   port: 0

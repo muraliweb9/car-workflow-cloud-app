@@ -6,7 +6,6 @@ import com.interview.carworkflowcloud.data.ProcessInstanceEventDto;
 import com.interview.carworkflowcloud.data.RestApiResult;
 import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
-import com.interview.carworkflowcloud.repository.TaskRepository;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
@@ -31,11 +30,14 @@ public class WorkflowController {
     @Autowired
     private ZeebeClient zeebeClient;
 
-    @Autowired
-    private TaskRepository taskRepository;
+    // @Autowired
+    // private TaskRepository taskRepository;
+
+    // @Autowired
+    // private TaskListApiService taskListApiService;
 
     @Autowired
-    private TaskListApiService taskListApiService;
+    private TaskListService taskListService;
 
     @PostMapping("/startProcess")
     public ProcessInstanceEventDto startProcess() {
@@ -68,11 +70,8 @@ public class WorkflowController {
                 "lastName", lastName,
                 "licenceNumber", licenceNumber);
 
-        Optional<TaskDetail> taskDetailsOpt = taskRepository.findByProcessIdAndTaskDefinitionIdAndProcessInstanceKey(
-                ProcessConstants.PROCESS_NAME, ProcessConstants.CUSTOMER_DETAILS_TASK_NAME, processInstanceId);
-
-        TaskDetail taskDetailsOpt2 =
-                taskListApiService.getTaskDetails(processInstanceId, ProcessConstants.CUSTOMER_DETAILS_TASK_NAME);
+        Optional<TaskDetail> taskDetailsOpt =
+                taskListService.getTaskDetails(ProcessConstants.CUSTOMER_DETAILS_TASK_NAME, processInstanceId);
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
@@ -101,8 +100,8 @@ public class WorkflowController {
 
         Map<String, Object> variables = Map.of("allChecksDone", Boolean.valueOf(allChecksDone));
 
-        Optional<TaskDetail> taskDetailsOpt = taskRepository.findByProcessIdAndTaskDefinitionIdAndProcessInstanceKey(
-                ProcessConstants.PROCESS_NAME, ProcessConstants.HANDOVER_VEHICLE_TASK_NAME, processInstanceId);
+        Optional<TaskDetail> taskDetailsOpt =
+                taskListService.getTaskDetails(ProcessConstants.HANDOVER_VEHICLE_TASK_NAME, processInstanceId);
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
