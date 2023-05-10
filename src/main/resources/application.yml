@@ -22,6 +22,9 @@ zeebe:
       clusterId: 1239c677-72fe-4c01-aa68-f9e4efded802
       clientId: XyeybWkT~R.u2CRq8cw-uYchxk2jYE1U
       clientSecret: RkqIjurRjEqDXgHo-CA~5Sh4Y~JI0Rlj2zR6CWP_LwMn9MWLgWH9rlEE11EGyp.~
+      oAuthUrl: https://login.cloud.camunda.io/oauth/token
+    api:
+      taskSearchUrl: https://${zeebe.client.cloud.region}.tasklist.camunda.io/${zeebe.client.cloud.clusterId}/v1/tasks/search
 logging:
   file:
     name: car-workflow-cloud-app.log

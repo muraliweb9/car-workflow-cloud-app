@@ -4,12 +4,15 @@ import com.interview.carworkflowcloud.consts.ProcessConstants;
 import com.interview.carworkflowcloud.data.CustomerDetails;
 import com.interview.carworkflowcloud.data.ProcessInstanceEventDto;
 import com.interview.carworkflowcloud.data.RestApiResult;
-import com.interview.carworkflowcloud.data.TaskDetails;
+import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
 import com.interview.carworkflowcloud.repository.TaskRepository;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,10 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/carworkflowcloud")
@@ -35,15 +34,20 @@ public class WorkflowController {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private TaskListApiService taskListApiService;
+
     @PostMapping("/startProcess")
     public ProcessInstanceEventDto startProcess() {
         HashMap<String, Object> variables = new HashMap<String, Object>();
 
-        ProcessInstanceEvent event = zeebeClient.newCreateInstanceCommand()
+        ProcessInstanceEvent event = zeebeClient
+                .newCreateInstanceCommand()
                 .bpmnProcessId(ProcessConstants.PROCESS_NAME)
                 .latestVersion()
                 .variables(variables)
-                .send().join();
+                .send()
+                .join();
         return ProcessInstanceEventDto.builder()
                 .processDefinitionKey(event.getProcessDefinitionKey())
                 .bpmnProcessId(event.getBpmnProcessId())
@@ -53,7 +57,8 @@ public class WorkflowController {
     }
 
     @PostMapping("enterCustomerDetails/{processInstanceId}")
-    public RestApiResult enterCustomerDetails(@PathVariable String processInstanceId, @RequestBody CustomerDetails customerDetails) {
+    public RestApiResult enterCustomerDetails(
+            @PathVariable String processInstanceId, @RequestBody CustomerDetails customerDetails) {
         String firstName = customerDetails.getFirstName();
         String lastName = customerDetails.getLastName();
         String licenceNumber = customerDetails.getLicenceNumber();
@@ -63,23 +68,24 @@ public class WorkflowController {
                 "lastName", lastName,
                 "licenceNumber", licenceNumber);
 
-        Optional<TaskDetails> taskDetailsOpt
-                = taskRepository.findByProcessIdAndTaskIdAndProcessInstanceId(
-                ProcessConstants.PROCESS_NAME,
-                ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
-                Long.valueOf(processInstanceId));
+        Optional<TaskDetail> taskDetailsOpt = taskRepository.findByProcessIdAndTaskDefinitionIdAndProcessInstanceKey(
+                ProcessConstants.PROCESS_NAME, ProcessConstants.CUSTOMER_DETAILS_TASK_NAME, processInstanceId);
+
+        TaskDetail taskDetailsOpt2 =
+                taskListApiService.getTaskDetails(processInstanceId, ProcessConstants.CUSTOMER_DETAILS_TASK_NAME);
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
             CompleteJobResponse response = zeebeClient
                     .newCompleteCommand(jobKey)
                     .variables(variables)
-                    .send().join();
+                    .send()
+                    .join();
             return RestApiResult.COMPLETED_OK;
         } else {
-            log.error("Unable to enter customer details task not found - processId [{}], " +
-                            "taskId [{}], " +
-                            "processInstanceId [{}]",
+            log.error(
+                    "Unable to enter customer details task not found - processId [{}], " + "taskId [{}], "
+                            + "processInstanceId [{}]",
                     ProcessConstants.PROCESS_NAME,
                     ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
                     processInstanceId);
@@ -88,31 +94,28 @@ public class WorkflowController {
     }
 
     @PostMapping("vehicleHandover/{processInstanceId}")
-    public RestApiResult vehicleHandover(@PathVariable String processInstanceId,
-                                         @RequestBody VehicleHandoverDetails vehicleHandoverDetails) {
+    public RestApiResult vehicleHandover(
+            @PathVariable String processInstanceId, @RequestBody VehicleHandoverDetails vehicleHandoverDetails) {
 
         boolean allChecksDone = vehicleHandoverDetails.allChecksDone();
 
-
         Map<String, Object> variables = Map.of("allChecksDone", Boolean.valueOf(allChecksDone));
 
-        Optional<TaskDetails> taskDetailsOpt
-                = taskRepository.findByProcessIdAndTaskIdAndProcessInstanceId(
-                ProcessConstants.PROCESS_NAME,
-                ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
-                Long.valueOf(processInstanceId));
+        Optional<TaskDetail> taskDetailsOpt = taskRepository.findByProcessIdAndTaskDefinitionIdAndProcessInstanceKey(
+                ProcessConstants.PROCESS_NAME, ProcessConstants.HANDOVER_VEHICLE_TASK_NAME, processInstanceId);
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
             CompleteJobResponse response = zeebeClient
                     .newCompleteCommand(jobKey)
                     .variables(variables)
-                    .send().join();
+                    .send()
+                    .join();
             return RestApiResult.COMPLETED_OK;
         } else {
-            log.error("Unable to handover vehicle task not found - processId [{}], " +
-                            "taskId [{}], " +
-                            "processInstanceId [{}]",
+            log.error(
+                    "Unable to handover vehicle task not found - processId [{}], " + "taskId [{}], "
+                            + "processInstanceId [{}]",
                     ProcessConstants.PROCESS_NAME,
                     ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
                     processInstanceId);
