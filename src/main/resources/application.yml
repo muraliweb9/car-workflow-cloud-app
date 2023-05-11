@@ -21,13 +21,38 @@ spring:
             clientId: bfdeeb6ab61832622378
             clientSecret: 4a4fd7fc2620cce7eeedfb29205fcc95bbe14875
     custom:
-      type: secure #none or secure
-      whitelist:
-         - a
-         - f
-         - f
-         - f
-         -
+      config:
+        type: SECURE #SECURE or NONE
+        secureWhitelist:
+          # // -- Swagger UI v2
+          - /v2/api-docs
+          - v2/api-docs
+          - /swagger-resources
+          - swagger-resources
+          - /swagger-resources/**
+          - swagger-resources/**
+          - /configuration/ui
+          - configuration/ui
+          - /configuration/security
+          - configuration/security
+          - /swagger-ui.html
+          - swagger-ui.html
+          - webjars/**,
+          # // -- Swagger UI v3
+          - /v3/api-docs/**
+          - v3/api-docs/**
+          - /swagger-ui/**
+          - swagger-ui/**
+          # // CSA Controllers
+          - /csa/api/token
+          # // Actuators
+          - /actuator/**
+          - /health/**
+          # // Camunda
+          - /carworkflowcloud/**
+        noneWhitelist:
+          - /
+
 
 server:
   # Allow for automatic available port allocation
