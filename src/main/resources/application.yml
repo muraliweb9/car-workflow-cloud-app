@@ -50,10 +50,6 @@ spring:
           - /health/**
           # // Camunda
           - /carworkflowcloud/**
-        noneWhitelist:
-          - /
-
-
 server:
   # Allow for automatic available port allocation
   port: 0

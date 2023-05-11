@@ -14,16 +14,7 @@ public class SecurityConfig {
 
     private List<String> secureWhitelist;
 
-    private List<String> noneWhitelist;
-
     public String[] getWhiteList() {
-        switch (type) {
-            case NONE:
-                return noneWhitelist.toArray(new String[0]);
-            case SECURE:
-                return secureWhitelist.toArray(new String[0]);
-            default:
-                return secureWhitelist.toArray(new String[0]);
-        }
+        return secureWhitelist.toArray(new String[0]);
     }
 }
