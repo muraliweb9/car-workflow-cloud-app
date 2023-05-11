@@ -1,4 +1,4 @@
-package com.interview.carworkflowcloud.data.oauth;
+package com.interview.carworkflowcloud.data.security;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

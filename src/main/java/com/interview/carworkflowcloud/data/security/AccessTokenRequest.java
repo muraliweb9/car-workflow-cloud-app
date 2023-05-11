@@ -1,4 +1,4 @@
-package com.interview.carworkflowcloud.data.oauth;
+package com.interview.carworkflowcloud.data.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.interview.carworkflowcloud.services.ClusterDetails;

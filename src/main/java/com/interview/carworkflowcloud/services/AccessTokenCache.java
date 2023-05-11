@@ -1,9 +1,9 @@
 package com.interview.carworkflowcloud.services;
 
-import com.interview.carworkflowcloud.data.oauth.AccessToken;
-import com.interview.carworkflowcloud.data.oauth.AccessTokenRequest;
-import com.interview.carworkflowcloud.data.oauth.AccessTokenResponse;
-import com.interview.carworkflowcloud.data.oauth.OAuthAudiance;
+import com.interview.carworkflowcloud.data.security.AccessToken;
+import com.interview.carworkflowcloud.data.security.AccessTokenRequest;
+import com.interview.carworkflowcloud.data.security.AccessTokenResponse;
+import com.interview.carworkflowcloud.data.security.OAuthAudiance;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -4,6 +4,8 @@ spring:
     custom:
       config:
         taskService: api # api or repo
+  #main:
+  #  allow-bean-definition-overriding: true
   boot:
     admin:
       client:
@@ -11,6 +13,21 @@ spring:
         url: http://localhost:8100
         # When shut down deregisters from spring boot admin
         auto-deregistration: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: bfdeeb6ab61832622378
+            clientSecret: 4a4fd7fc2620cce7eeedfb29205fcc95bbe14875
+    custom:
+      type: secure #none or secure
+      whitelist:
+         - a
+         - f
+         - f
+         - f
+         -
 
 server:
   # Allow for automatic available port allocation
@@ -30,6 +47,8 @@ zeebe:
     api:
       taskSearchUrl: https://${zeebe.client.cloud.region}.tasklist.camunda.io/${zeebe.client.cloud.clusterId}/v1/tasks/search
 logging:
+  level:
+    org.springframework.security: INFO
   file:
     name: car-workflow-cloud-app.log
     max-history: 5
