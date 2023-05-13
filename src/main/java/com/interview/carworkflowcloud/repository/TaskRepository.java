@@ -2,11 +2,11 @@ package com.interview.carworkflowcloud.repository;
 
 import com.interview.carworkflowcloud.data.TaskDetail;
 import java.util.Optional;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TaskRepository extends CrudRepository<TaskDetail, String> {
+public interface TaskRepository extends ListCrudRepository<TaskDetail, String> {
 
     Optional<TaskDetail> findById(String id);
 
