@@ -16,6 +16,7 @@ public class UserTaskWorker {
         this.taskRepository = taskRepository;
     }
 
+    // Subscribing to type = "io.camunda.zeebe:userTask" causes issues with ProcessTests
     // @JobWorker(type = "io.camunda.zeebe:userTask", name= "ABC", autoComplete = false)
     public void handleUserTask(final ActivatedJob job) {
         Long taskKey = job.getKey();

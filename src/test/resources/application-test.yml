@@ -3,6 +3,9 @@ spring:
     admin:
       client: # don't register on spring boot admin
         url:
+    test:
+      process:
+        timeout: 20
 eureka:
   client:
     registerWithEureka: false # don't register with Eureka

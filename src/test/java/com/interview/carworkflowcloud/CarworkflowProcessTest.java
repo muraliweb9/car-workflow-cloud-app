@@ -1,5 +1,6 @@
 package com.interview.carworkflowcloud;
 
+import static com.interview.carworkflowcloud.ZeebeTestThreadSupport.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,8 +17,12 @@ import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -25,6 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ZeebeSpringTest
 @ActiveProfiles("test")
 @Slf4j
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CarworkflowProcessTest {
 
     @Autowired
@@ -33,15 +39,16 @@ public class CarworkflowProcessTest {
     @Autowired
     private ZeebeTestEngine zeebeTestEngine;
 
+    @Value("${spring.boot.test.process.timeout}")
+    private Long processTestTimeout;
+
     @Test
     @SneakyThrows
-    public void testStartProcess() throws Exception {
-        log.info("Running testStartProcess");
+    @Order(1)
+    public void testHappyPath() throws Exception {
+        log.info("Running testHappyPath !!");
 
-        log.info("ZeebeClient [{}]", zeebeClient);
-
-        log.info("ZeebeTestEngine [{}]", zeebeTestEngine);
-
+        // Deploy the process on test engine - NOT needed handled by @ZeebeSpringTest
         //        DeploymentEvent event = zeebeClient.newDeployResourceCommand()
         //                .addResourceFromClasspath("my-process.bpmn")
         //                .send()
@@ -62,9 +69,118 @@ public class CarworkflowProcessTest {
         waitForUserTaskAndComplete(
                 processInstance,
                 ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
-                Collections.emptyMap(),
+                Map.of("firstName", "Mura", "lastName", "Karu", "licenceNumber", "12345678"),
                 "start",
                 "enter-customer-details");
+
+        waitForUserTaskAndComplete(
+                processInstance,
+                ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
+                Map.of("allChecksDone", Boolean.TRUE),
+                "enter-customer-details",
+                "handover-vehicle");
+
+        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
+
+        BpmnAssert.assertThat(processInstance).isCompleted();
+    }
+
+    @Test
+    @SneakyThrows
+    @Order(2)
+    public void testFailedHandover() throws Exception {
+        log.info("Running testFailedHandover !!");
+
+        // Deploy the process on test engine - NOT needed handled by @ZeebeSpringTest
+        //        DeploymentEvent event = zeebeClient.newDeployResourceCommand()
+        //                .addResourceFromClasspath("my-process.bpmn")
+        //                .send()
+        //                .join();
+        //        DeploymentAssert assertions = BpmnAssert.assertThat(event);
+
+        // start a process instance
+        ProcessInstanceEvent processInstance = zeebeClient
+                .newCreateInstanceCommand() //
+                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
+                .latestVersion() //
+                .variables(Collections.emptyMap()) //
+                .send()
+                .join();
+
+        // ProcessInstanceAssert assertions = BpmnAssert.assertThat(processInstance);
+
+        waitForUserTaskAndComplete(
+                processInstance,
+                ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
+                Map.of("firstName", "Mura", "lastName", "Karu", "licenceNumber", "12345678"),
+                "start",
+                "enter-customer-details");
+
+        waitForUserTaskAndComplete(
+                processInstance,
+                ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
+                Map.of("allChecksDone", Boolean.FALSE), // Failed Handover
+                "enter-customer-details",
+                "handover-vehicle");
+
+        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
+
+        BpmnAssert.assertThat(processInstance)
+                .hasPassedElement("handover-vehicle")
+                .isWaitingAtElements("return-vehicle-to-depot")
+                // .hasNotPassedElement("enterr-customer-details")
+                .isNotCompleted();
+
+        BpmnAssert.assertThat(processInstance).isNotCompleted();
+    }
+
+    @Test
+    @SneakyThrows
+    @Order(3)
+    public void testFailedFinaliseBooking() throws Exception {
+        log.info("Running testFailedFinaliseBooking !!");
+
+        // Deploy the process on test engine - NOT needed handled by @ZeebeSpringTest
+        //        DeploymentEvent event = zeebeClient.newDeployResourceCommand()
+        //                .addResourceFromClasspath("my-process.bpmn")
+        //                .send()
+        //                .join();
+        //        DeploymentAssert assertions = BpmnAssert.assertThat(event);
+
+        // start a process instance
+        ProcessInstanceEvent processInstance = zeebeClient
+                .newCreateInstanceCommand() //
+                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
+                .latestVersion() //
+                .variables(Collections.emptyMap()) //
+                .send()
+                .join();
+
+        // ProcessInstanceAssert assertions = BpmnAssert.assertThat(processInstance);
+
+        waitForUserTaskAndComplete(
+                processInstance,
+                ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
+                Map.of("firstName", "Mura", "lastName", "Karu", "licenceNumber", ""), // Missing lence number
+                "start",
+                "enter-customer-details");
+
+        waitForUserTaskAndComplete(
+                processInstance,
+                ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
+                Map.of("allChecksDone", Boolean.TRUE),
+                "enter-customer-details",
+                "handover-vehicle");
+
+        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
+
+        BpmnAssert.assertThat(processInstance)
+                .hasPassedElement("handover-vehicle")
+                .isWaitingAtElements("unable-to-finalise-booking")
+                // .hasNotPassedElement("enterr-customer-details")
+                .isNotCompleted();
+
+        BpmnAssert.assertThat(processInstance).isNotCompleted();
     }
 
     @SneakyThrows
@@ -78,8 +194,8 @@ public class CarworkflowProcessTest {
         zeebeTestEngine.waitForIdleState(Duration.ofSeconds(10));
 
         BpmnAssert.assertThat(processInstance)
-                .hasPassedElement("start")
-                .isWaitingAtElements("enter-customer-details")
+                .hasPassedElement(passedStage)
+                .isWaitingAtElements(waitingStage)
                 // .hasNotPassedElement("enterr-customer-details")
                 .isNotCompleted();
 
