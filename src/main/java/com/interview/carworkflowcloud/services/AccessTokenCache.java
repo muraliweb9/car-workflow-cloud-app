@@ -15,13 +15,18 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class AccessTokenCache {
 
-    @Autowired
-    public RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Autowired
     private ClusterDetails clusterDetails;
 
     private Map<OAuthAudiance, AccessToken> accessTokens = new ConcurrentHashMap<>();
+
+    public AccessTokenCache(
+            RestTemplate restTemplate, ClusterDetails clusterDetails, AccessTokenCache accessTokenCache) {
+        this.restTemplate = restTemplate;
+        this.clusterDetails = clusterDetails;
+    }
 
     public AccessToken getAccessToken(OAuthAudiance audiance) {
         AccessToken accessToken = accessTokens.get(audiance);

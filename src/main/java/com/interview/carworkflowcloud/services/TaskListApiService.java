@@ -8,7 +8,6 @@ import com.interview.carworkflowcloud.services.config.ClusterDetails;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -23,14 +22,18 @@ import org.springframework.web.client.RestTemplate;
 @ConditionalOnProperty(prefix = "spring.application.custom.config", name = "taskService", havingValue = "api")
 public class TaskListApiService implements TaskListService {
 
-    @Autowired
-    public RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-    @Autowired
     private ClusterDetails clusterDetails;
 
-    @Autowired
     private AccessTokenCache accessTokenCache;
+
+    public TaskListApiService(
+            RestTemplate restTemplate, ClusterDetails clusterDetails, AccessTokenCache accessTokenCache) {
+        this.restTemplate = restTemplate;
+        this.clusterDetails = clusterDetails;
+        this.accessTokenCache = accessTokenCache;
+    }
 
     public Optional<TaskDetail> getTaskDetails(
             String processDefinitionKey, String taskDefinitionId, String processInstanceKey) {
