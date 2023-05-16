@@ -22,8 +22,7 @@ public class AccessTokenCache {
 
     private Map<OAuthAudiance, AccessToken> accessTokens = new ConcurrentHashMap<>();
 
-    public AccessTokenCache(
-            RestTemplate restTemplate, ClusterDetails clusterDetails, AccessTokenCache accessTokenCache) {
+    public AccessTokenCache(RestTemplate restTemplate, ClusterDetails clusterDetails) {
         this.restTemplate = restTemplate;
         this.clusterDetails = clusterDetails;
     }
