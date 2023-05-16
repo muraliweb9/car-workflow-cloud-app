@@ -191,7 +191,7 @@ public class CarworkflowProcessTest {
             String passedStage,
             String waitingStage) {
         // Let the workflow engine do whatever it needs to do
-        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(10));
+        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
         BpmnAssert.assertThat(processInstance)
                 .hasPassedElement(passedStage)
