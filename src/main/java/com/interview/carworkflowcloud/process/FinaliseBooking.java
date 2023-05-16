@@ -4,7 +4,7 @@ import com.interview.carworkflowcloud.consts.ErrorCode;
 import com.interview.carworkflowcloud.data.BookingRecord;
 import com.interview.carworkflowcloud.data.Car;
 import com.interview.carworkflowcloud.data.CustomerDetails;
-import io.camunda.zeebe.client.ZeebeClient;
+import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.worker.JobClient;
@@ -14,15 +14,17 @@ import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class FinaliseBooking {
 
-    @Autowired
-    private ZeebeClient zeebeClient;
+    private ZeebeClientWrapper zeebeClient;
+
+    public FinaliseBooking(ZeebeClientWrapper zeebeClient) {
+        this.zeebeClient = zeebeClient;
+    }
 
     @JobWorker(type = "finaliseBooking", fetchAllVariables = true, autoComplete = true)
     @ZeebeWorker
@@ -56,13 +58,9 @@ public class FinaliseBooking {
                 .allChecksDone(allChecksDone)
                 .build();
 
-        var variables = Map.of("bookingRecord", record);
+        Map<String, Object> variables = Map.of("bookingRecord", record);
 
-        CompleteJobResponse response = zeebeClient
-                .newCompleteCommand(job.getKey())
-                .variables(variables)
-                .send()
-                .join(); // Blocking behaviour - limited for scalability
+        CompleteJobResponse response = zeebeClient.completeCommand(job, variables);
 
         log.info("FinaliseBooking CompleteJobResponse: [{}]", response);
     }

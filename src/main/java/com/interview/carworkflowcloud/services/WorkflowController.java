@@ -6,14 +6,13 @@ import com.interview.carworkflowcloud.data.ProcessInstanceEventDto;
 import com.interview.carworkflowcloud.data.RestApiResult;
 import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
-import io.camunda.zeebe.client.ZeebeClient;
+import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,23 +26,20 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class WorkflowController {
 
-    @Autowired
-    private ZeebeClient zeebeClient;
+    private final ZeebeClientWrapper zeebeClient;
 
-    @Autowired
-    private TaskListService taskListService;
+    private final TaskListService taskListService;
+
+    public WorkflowController(ZeebeClientWrapper zeebeClient, TaskListService taskListService) {
+        this.zeebeClient = zeebeClient;
+        this.taskListService = taskListService;
+    }
 
     @PostMapping("/startProcess")
     public ProcessInstanceEventDto startProcess() {
         HashMap<String, Object> variables = new HashMap<String, Object>();
 
-        ProcessInstanceEvent event = zeebeClient
-                .newCreateInstanceCommand()
-                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
-                .latestVersion()
-                .variables(variables)
-                .send()
-                .join();
+        ProcessInstanceEvent event = zeebeClient.newInstance(variables);
         return ProcessInstanceEventDto.builder()
                 .processDefinitionKey(event.getProcessDefinitionKey())
                 .bpmnProcessId(event.getBpmnProcessId())
@@ -71,11 +67,7 @@ public class WorkflowController {
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
-            CompleteJobResponse response = zeebeClient
-                    .newCompleteCommand(jobKey)
-                    .variables(variables)
-                    .send()
-                    .join();
+            CompleteJobResponse response = zeebeClient.completeCommand(jobKey, variables);
             return RestApiResult.COMPLETED_OK;
         } else {
             log.error(
@@ -103,11 +95,7 @@ public class WorkflowController {
 
         if (taskDetailsOpt.isPresent()) {
             Long jobKey = taskDetailsOpt.get().getId();
-            CompleteJobResponse response = zeebeClient
-                    .newCompleteCommand(jobKey)
-                    .variables(variables)
-                    .send()
-                    .join();
+            CompleteJobResponse response = zeebeClient.completeCommand(jobKey, variables);
             return RestApiResult.COMPLETED_OK;
         } else {
             log.error(
