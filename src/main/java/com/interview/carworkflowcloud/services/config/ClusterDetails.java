@@ -1,4 +1,4 @@
-package com.interview.carworkflowcloud.services;
+package com.interview.carworkflowcloud.services.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

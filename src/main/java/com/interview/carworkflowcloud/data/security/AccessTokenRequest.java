@@ -1,7 +1,7 @@
 package com.interview.carworkflowcloud.data.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.interview.carworkflowcloud.services.ClusterDetails;
+import com.interview.carworkflowcloud.services.config.ClusterDetails;
 import lombok.Builder;
 import lombok.Data;
 

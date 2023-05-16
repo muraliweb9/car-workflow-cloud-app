@@ -10,12 +10,12 @@ import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
+import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -25,7 +25,14 @@ public class FinaliseBooking {
     private ZeebeClient zeebeClient;
 
     @JobWorker(type = "finaliseBooking", fetchAllVariables = true, autoComplete = true)
-    public void finaliseBooking(final JobClient client, final ActivatedJob job, @Variable String firstName, @Variable String lastName, @Variable String licenceNumber, @Variable Car car) {
+    @ZeebeWorker
+    public void finaliseBooking(
+            final JobClient client,
+            final ActivatedJob job,
+            @Variable String firstName,
+            @Variable String lastName,
+            @Variable String licenceNumber,
+            @Variable Car car) {
 
         log.info("Running FinaliseBooking !!");
 
@@ -33,17 +40,30 @@ public class FinaliseBooking {
             throw ErrorCode.FINALISE_FAILURE.bpmnError();
         }
 
-        CustomerDetails cust = CustomerDetails.builder().id("1").firstName("firstName").lastName("lastName").licenceNumber("licenceNumber").build();
+        CustomerDetails cust = CustomerDetails.builder()
+                .id("1")
+                .firstName("firstName")
+                .lastName("lastName")
+                .licenceNumber("licenceNumber")
+                .build();
 
         boolean allChecksDone = true;
 
-        BookingRecord record = BookingRecord.builder().id("1").customerDetails(cust).car(car).allChecksDone(allChecksDone).build();
+        BookingRecord record = BookingRecord.builder()
+                .id("1")
+                .customerDetails(cust)
+                .car(car)
+                .allChecksDone(allChecksDone)
+                .build();
 
         var variables = Map.of("bookingRecord", record);
 
-        CompleteJobResponse response = zeebeClient.newCompleteCommand(job.getKey()).variables(variables).send().join(); // Blocking behaviour - limited for scalability
+        CompleteJobResponse response = zeebeClient
+                .newCompleteCommand(job.getKey())
+                .variables(variables)
+                .send()
+                .join(); // Blocking behaviour - limited for scalability
 
         log.info("FinaliseBooking CompleteJobResponse: [{}]", response);
-
     }
 }

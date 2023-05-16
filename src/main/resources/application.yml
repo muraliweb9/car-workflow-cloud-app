@@ -52,7 +52,7 @@ spring:
           - /carworkflowcloud/**
 server:
   # Allow for automatic available port allocation
-  port: 0
+  port: 19000
   error:
     # e.g. when an 500 error is displayed will have the underlying error message
     include-message: always
