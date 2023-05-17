@@ -10,7 +10,6 @@ import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
 import io.camunda.zeebe.process.test.assertions.BpmnAssert;
 import io.camunda.zeebe.spring.test.ZeebeSpringTest;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -82,19 +81,15 @@ public class CarworkflowProcessTest {
                 processInstance,
                 ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
                 Map.of("firstName", "Mura", "lastName", "Karu", "licenceNumber", "12345678"),
-                "start",
-                "enter-customer-details");
+                "start");
 
         waitForUserTaskAndComplete(
                 processInstance,
                 ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
                 Map.of("allChecksDone", Boolean.TRUE),
-                "enter-customer-details",
-                "handover-vehicle");
+                "enter-customer-details");
 
         ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "finalise-booking");
-
-        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
         BpmnAssert.assertThat(processInstance).isCompleted();
     }
@@ -128,24 +123,21 @@ public class CarworkflowProcessTest {
                 processInstance,
                 ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
                 Map.of("firstName", "Mura", "lastName", "Karu", "licenceNumber", "12345678"),
-                "start",
-                "enter-customer-details");
+                "start");
 
         waitForUserTaskAndComplete(
                 processInstance,
                 ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
                 Map.of("allChecksDone", Boolean.FALSE), // Failed Handover
-                "enter-customer-details",
-                "handover-vehicle");
+                "enter-customer-details");
 
-        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
+        // zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
         ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "handover-vehicle");
 
         BpmnAssert.assertThat(processInstance)
                 .hasPassedElement("handover-vehicle")
                 .isWaitingAtElements("return-vehicle-to-depot")
-                // .hasNotPassedElement("enterr-customer-details")
                 .isNotCompleted();
 
         BpmnAssert.assertThat(processInstance).isNotCompleted();
@@ -179,24 +171,19 @@ public class CarworkflowProcessTest {
                 processInstance,
                 ProcessConstants.CUSTOMER_DETAILS_TASK_NAME,
                 Map.of("firstName", "Mura", "lastName", "Karu", "licenceNumber", ""), // Missing lence number
-                "start",
-                "enter-customer-details");
+                "start");
 
         waitForUserTaskAndComplete(
                 processInstance,
                 ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
                 Map.of("allChecksDone", Boolean.TRUE),
-                "enter-customer-details",
-                "handover-vehicle");
+                "enter-customer-details");
 
-        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
-
-        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "handover-vehicle");
+        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "finalise-booking");
 
         BpmnAssert.assertThat(processInstance)
-                .hasPassedElement("handover-vehicle")
+                .hasPassedElement("finalise-booking")
                 .isWaitingAtElements("unable-to-finalise-booking")
-                // .hasNotPassedElement("enterr-customer-details")
                 .isNotCompleted();
 
         BpmnAssert.assertThat(processInstance).isNotCompleted();
@@ -207,10 +194,7 @@ public class CarworkflowProcessTest {
             ProcessInstanceEvent processInstance,
             String userTaskId,
             Map<String, Object> variables,
-            String passedStage,
-            String waitingStage) {
-        // Let the workflow engine do whatever it needs to do
-        zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
+            String passedStage) {
 
         ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, passedStage);
 
