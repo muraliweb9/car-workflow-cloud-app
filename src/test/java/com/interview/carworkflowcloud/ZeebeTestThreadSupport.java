@@ -5,6 +5,7 @@ import static io.camunda.zeebe.process.test.assertions.BpmnAssert.assertThat;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
 import io.camunda.zeebe.process.test.assertions.BpmnAssert;
+import io.camunda.zeebe.process.test.assertions.BpmnAssert2;
 import io.camunda.zeebe.process.test.filters.RecordStream;
 import io.camunda.zeebe.process.test.inspections.model.InspectedProcessInstance;
 import java.time.Duration;
@@ -75,6 +76,10 @@ public class ZeebeTestThreadSupport {
         waitForProcessInstanceHasPassedElement(processInstance.getProcessInstanceKey(), elementId, DEFAULT_DURATION);
     }
 
+    public static void hasProcessInstanceThrownError(ProcessInstanceEvent processInstance, String elementId) {
+        hasProcessInstanceThrownError(processInstance.getProcessInstanceKey(), elementId, DEFAULT_DURATION);
+    }
+
     public static void waitForProcessInstanceHasPassedElement(
             ProcessInstanceEvent processInstance, String elementId, Duration duration) {
         waitForProcessInstanceHasPassedElement(processInstance.getProcessInstanceKey(), elementId, duration);
@@ -88,6 +93,10 @@ public class ZeebeTestThreadSupport {
     public static void waitForProcessInstanceHasPassedElement(
             long processInstanceKey, String elementId, Duration duration) {
         waitForProcessInstanceHasPassedElement(new InspectedProcessInstance(processInstanceKey), elementId, duration);
+    }
+
+    public static void hasProcessInstanceThrownError(long processInstanceKey, String elementId, Duration duration) {
+        hasProcessInstanceThrownError(new InspectedProcessInstance(processInstanceKey), elementId, duration);
     }
 
     public static void waitForProcessInstanceHasPassedElement(
@@ -110,6 +119,24 @@ public class ZeebeTestThreadSupport {
             BpmnAssert.initRecordStream(
                     RecordStream.of(Objects.requireNonNull(engine).getRecordStreamSource()));
             assertThat(inspectedProcessInstance).hasPassedElement(elementId);
+        });
+    }
+
+    public static void hasProcessInstanceThrownError(
+            InspectedProcessInstance inspectedProcessInstance, String elementId, Duration duration) {
+        final ZeebeTestEngine engine = ENGINES.get();
+        if (engine == null) {
+            throw new IllegalStateException(
+                    "No Zeebe engine is initialized for the current thread, annotate the test with @ZeebeSpringTest");
+        }
+        if (duration == null) {
+            duration = DEFAULT_DURATION;
+        }
+        Awaitility.await().atMost(duration).untilAsserted(() -> {
+            Thread.sleep(DEFAULT_INTERVAL_MILLIS);
+            BpmnAssert2.initRecordStream(
+                    RecordStream.of(Objects.requireNonNull(engine).getRecordStreamSource()));
+            BpmnAssert2.assertThat(inspectedProcessInstance).hasProcessInstanceThrownError(elementId);
         });
     }
 }
