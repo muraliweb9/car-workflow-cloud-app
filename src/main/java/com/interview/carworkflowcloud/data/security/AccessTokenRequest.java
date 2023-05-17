@@ -2,11 +2,14 @@ package com.interview.carworkflowcloud.data.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.interview.carworkflowcloud.services.config.ClusterDetails;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 @Builder
+@Setter(AccessLevel.NONE)
 public class AccessTokenRequest {
 
     @JsonProperty(value = "client_id")

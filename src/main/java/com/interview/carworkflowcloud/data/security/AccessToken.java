@@ -1,11 +1,14 @@
 package com.interview.carworkflowcloud.data.security;
 
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 @Builder
+@Setter(AccessLevel.NONE)
 public class AccessToken {
 
     private String accessToken;
