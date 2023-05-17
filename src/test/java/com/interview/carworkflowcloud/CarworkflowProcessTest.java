@@ -1,6 +1,5 @@
 package com.interview.carworkflowcloud;
 
-import static com.interview.carworkflowcloud.ZeebeTestThreadSupport.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,16 @@ public class CarworkflowProcessTest {
 
     @Value("${spring.boot.test.process.timeout}")
     private Long processTestTimeout;
+
+    @BeforeEach
+    public void beforeEach() {
+        ZeebeTestThreadSupport.setEngineForCurrentThread(zeebeTestEngine);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        ZeebeTestThreadSupport.cleanupEngineForCurrentThread();
+    }
 
     @Test
     @SneakyThrows
@@ -81,6 +92,8 @@ public class CarworkflowProcessTest {
                 Map.of("allChecksDone", Boolean.TRUE),
                 "enter-customer-details",
                 "handover-vehicle");
+
+        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "finalise-booking");
 
         zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
@@ -127,6 +140,8 @@ public class CarworkflowProcessTest {
                 "handover-vehicle");
 
         zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
+
+        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "handover-vehicle");
 
         BpmnAssert.assertThat(processInstance)
                 .hasPassedElement("handover-vehicle")
@@ -177,6 +192,8 @@ public class CarworkflowProcessTest {
 
         zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
+        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "handover-vehicle");
+
         BpmnAssert.assertThat(processInstance)
                 .hasPassedElement("handover-vehicle")
                 .isWaitingAtElements("unable-to-finalise-booking")
@@ -196,6 +213,8 @@ public class CarworkflowProcessTest {
         // Let the workflow engine do whatever it needs to do
         zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
+        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, passedStage);
+
         //        BpmnAssert.assertThat(processInstance)
         //                .hasPassedElement(passedStage)
         //                .isWaitingAtElements(waitingStage)
@@ -212,7 +231,7 @@ public class CarworkflowProcessTest {
                 .getJobs();
 
         // Should be only one
-        assertTrue(jobs.size() > 0, "Job for user task '" + userTaskId + "' does not exist");
+        assertTrue(jobs.size() > 0, "Job for user task '" + userTaskId + "' found " + jobs.size());
         ActivatedJob userTaskJob = jobs.get(0);
         // Make sure it is the right one
         if (userTaskId != null) {
