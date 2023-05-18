@@ -12,6 +12,7 @@ import com.interview.carworkflowcloud.data.CustomerDetails;
 import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.utils.TestUtils;
 import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
+import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import java.util.HashMap;
@@ -35,6 +36,9 @@ public class WorkflowControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private ZeebeClient client;
 
     @MockBean
     private ZeebeClientWrapper zeebeClientWrapper;
