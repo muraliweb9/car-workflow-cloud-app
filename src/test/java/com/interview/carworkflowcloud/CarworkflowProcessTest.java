@@ -9,20 +9,10 @@ import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
 import io.camunda.zeebe.process.test.assertions.BpmnAssert;
-import io.camunda.zeebe.process.test.filters.RecordStream;
-import io.camunda.zeebe.process.test.filters.StreamFilter;
-import io.camunda.zeebe.protocol.record.Record;
-import io.camunda.zeebe.protocol.record.RejectionType;
-import io.camunda.zeebe.protocol.record.intent.JobIntent;
-import io.camunda.zeebe.protocol.record.value.JobRecordValue;
 import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -193,43 +183,6 @@ public class CarworkflowProcessTest {
         ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "check-handover");
 
         ZeebeTestThreadSupport.hasProcessInstanceThrownError(processInstance, "finalise-booking");
-
-        RecordStream recordStream =
-                RecordStream.of(Objects.requireNonNull(zeebeTestEngine).getRecordStreamSource());
-
-        Long count = StreamFilter.processInstance(recordStream)
-                .withProcessInstanceKey(processInstance.getProcessInstanceKey())
-                .withRejectionType(RejectionType.NULL_VAL)
-                // .withElementId(elementId)
-                // .withIntents(
-                //        ProcessInstanceIntent.ELEMENT_COMPLETED, ProcessInstanceIntent.SEQUENCE_FLOW_TAKEN)
-                .stream()
-                .count();
-
-        /*
-        IncidentAssert assertions = BpmnAssert.assertThat(processInstance)
-        		.extractingLatestIncident();
-
-        StringAssert s = assertions.extractingErrorMessage();
-
-        log.info(s.toString());
-        */
-
-        Stream<Record<JobRecordValue>> records = StreamFilter.jobRecords(recordStream)
-                .withIntent(JobIntent.ERROR_THROWN)
-                .withElementId("finalise-booking")
-                // .withKey()withProcessInstanceKey(processInstance.getProcessInstanceKey())
-                .stream();
-
-        List<Record<JobRecordValue>> list = records.collect(Collectors.toList());
-
-        Iterator<Record<JobRecordValue>> iter = list.iterator();
-        int i = 1;
-        while (iter.hasNext()) {
-            Record<JobRecordValue> n = iter.next();
-            log.info("" + i + "=" + n.getIntent());
-            i++;
-        }
 
         BpmnAssert.assertThat(processInstance)
                 .hasPassedElement("check-handover")

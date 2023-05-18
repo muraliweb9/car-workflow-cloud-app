@@ -26,7 +26,8 @@ public class ProcessInstanceAssert2 extends ProcessInstanceAssert {
                         .count();
 
         assertThat(count)
-                .withFailMessage("Expected element with id %s to have thrown %s error, but was %s", elementId, 1, count)
+                .withFailMessage(
+                        "Expected element with id %s to have thrown %s error(s), but was %s", elementId, 1, count)
                 .isEqualTo(1);
 
         return this;
