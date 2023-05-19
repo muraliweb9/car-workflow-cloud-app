@@ -19,7 +19,8 @@ spring:
       enabled: false
   security:
     custom:
-      type: NONE
+      config:
+        type: NONE
 eureka:
   client:
     enabled: false
