@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.interview.carworkflowcloud.consts.ProcessConstants;
-import io.camunda.zeebe.client.ZeebeClient;
+import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
@@ -36,7 +36,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class CarworkflowProcessTest {
 
     @Autowired
-    private ZeebeClient zeebeClient;
+    private ZeebeClientWrapper zeebeClient;
 
     @Autowired
     private ZeebeTestEngine zeebeTestEngine;
@@ -68,13 +68,7 @@ public class CarworkflowProcessTest {
         //        DeploymentAssert assertions = BpmnAssert.assertThat(event);
 
         // start a process instance
-        ProcessInstanceEvent processInstance = zeebeClient
-                .newCreateInstanceCommand() //
-                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
-                .latestVersion() //
-                .variables(Collections.emptyMap()) //
-                .send()
-                .join();
+        ProcessInstanceEvent processInstance = zeebeClient.newInstance(Collections.emptyMap());
 
         // ProcessInstanceAssert assertions = BpmnAssert.assertThat(processInstance);
 
@@ -110,13 +104,7 @@ public class CarworkflowProcessTest {
         //        DeploymentAssert assertions = BpmnAssert.assertThat(event);
 
         // start a process instance
-        ProcessInstanceEvent processInstance = zeebeClient
-                .newCreateInstanceCommand() //
-                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
-                .latestVersion() //
-                .variables(Collections.emptyMap()) //
-                .send()
-                .join();
+        ProcessInstanceEvent processInstance = zeebeClient.newInstance(Collections.emptyMap());
 
         // ProcessInstanceAssert assertions = BpmnAssert.assertThat(processInstance);
 
@@ -158,13 +146,7 @@ public class CarworkflowProcessTest {
         //        DeploymentAssert assertions = BpmnAssert.assertThat(event);
 
         // start a process instance
-        ProcessInstanceEvent processInstance = zeebeClient
-                .newCreateInstanceCommand() //
-                .bpmnProcessId(ProcessConstants.PROCESS_NAME)
-                .latestVersion() //
-                .variables(Collections.emptyMap()) //
-                .send()
-                .join();
+        ProcessInstanceEvent processInstance = zeebeClient.newInstance(Collections.emptyMap());
 
         // ProcessInstanceAssert assertions = BpmnAssert.assertThat(processInstance);
 
@@ -208,13 +190,7 @@ public class CarworkflowProcessTest {
         //                .isNotCompleted();
 
         // Now get all user tasks
-        List<ActivatedJob> jobs = zeebeClient
-                .newActivateJobsCommand()
-                .jobType("io.camunda.zeebe:userTask")
-                .maxJobsToActivate(1)
-                .send()
-                .join()
-                .getJobs();
+        List<ActivatedJob> jobs = zeebeClient.activateJobs();
 
         // Should be only one
         assertTrue(jobs.size() > 0, "Job for user task '" + userTaskId + "' found " + jobs.size());
@@ -226,13 +202,9 @@ public class CarworkflowProcessTest {
 
         // And complete it passing the variables
         if (variables != null && variables.size() > 0) {
-            zeebeClient
-                    .newCompleteCommand(userTaskJob.getKey())
-                    .variables(variables)
-                    .send()
-                    .join();
+            zeebeClient.completeCommand(userTaskJob.getKey(), variables);
         } else {
-            zeebeClient.newCompleteCommand(userTaskJob.getKey()).send().join();
+            zeebeClient.completeCommand(userTaskJob.getKey());
         }
     }
 }
