@@ -48,5 +48,14 @@ public class AccessTokenCacheTest {
         Assertions.assertEquals(false, accessToken.isValidFor(OAuthAudiance.OPERATE));
 
         Assertions.assertTrue(accessToken.hasNotExpired());
+
+        // Get it from the cache this time
+
+        accessToken = tokenCache.getAccessToken(audiance);
+
+        Assertions.assertEquals("1234ABCD£$!!", accessToken.getAccessToken());
+
+        Mockito.verify(restTemplate, Mockito.times(1))
+                .postForObject(Mockito.eq(oAuthUri), Mockito.eq(tokenRequest), Mockito.eq(AccessTokenResponse.class));
     }
 }
