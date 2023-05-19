@@ -1,0 +1,27 @@
+spring:
+  application:
+    custom:
+      config:
+        taskService: repo
+  boot:
+    admin:
+      client: # don't register on spring boot admin
+        url:
+    test:
+      process:
+        timeout: 20
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+  security:
+    custom:
+      type: NONE
+eureka:
+  client:
+    enabled: false
+    registerWithEureka: false # don't register with Eureka
+    fetchRegistry: false
