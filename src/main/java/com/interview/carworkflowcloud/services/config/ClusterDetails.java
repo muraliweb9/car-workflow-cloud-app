@@ -1,11 +1,13 @@
 package com.interview.carworkflowcloud.services.config;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Getter
+@Builder
 public class ClusterDetails {
 
     @Value("${zeebe.client.cloud.region}")
