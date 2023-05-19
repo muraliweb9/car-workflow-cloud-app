@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.interview.carworkflowcloud.consts.ProcessConstants;
 import com.interview.carworkflowcloud.data.CustomerDetails;
 import com.interview.carworkflowcloud.data.TaskDetail;
+import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
 import com.interview.carworkflowcloud.utils.TestUtils;
 import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
 import io.camunda.zeebe.client.ZeebeClient;
@@ -108,5 +109,115 @@ public class WorkflowControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("COMPLETED_OK")));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testEnterCustomerDetailsFailed() {
+
+        String processDefinitionKey = "1234";
+        String processInstanceKey = "5678";
+        String firstName = "m";
+        String lastName = "k";
+        String licenceNumber = "1234";
+        Long taskId = 9999L;
+
+        CompleteJobResponse response = Mockito.mock(CompleteJobResponse.class);
+        CustomerDetails details = CustomerDetails.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .licenceNumber(licenceNumber)
+                .build();
+
+        when(taskListService.getTaskDetails(
+                        Mockito.eq(processDefinitionKey),
+                        Mockito.eq(ProcessConstants.CUSTOMER_DETAILS_TASK_NAME),
+                        Mockito.eq(processInstanceKey)))
+                .thenReturn(Optional.empty());
+
+        when(zeebeClientWrapper.completeCommand(
+                        taskId,
+                        Map.of(
+                                "firstName", firstName,
+                                "lastName", lastName,
+                                "licenceNumber", licenceNumber)))
+                .thenReturn(response);
+
+        this.mockMvc
+                .perform(post("/carworkflowcloud/enterCustomerDetails/" + processDefinitionKey + "/"
+                                + processInstanceKey)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtils.asJsonString(details)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("COMPLETED_FAILED")));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testVehicleHandover() {
+
+        String processDefinitionKey = "1234";
+        String processInstanceKey = "5678";
+        Long taskId = 9999L;
+
+        CompleteJobResponse response = Mockito.mock(CompleteJobResponse.class);
+        VehicleHandoverDetails details = VehicleHandoverDetails.builder()
+                .cleaned(true)
+                .fuelFull(true)
+                .exteriorGood(true)
+                .build();
+
+        when(taskListService.getTaskDetails(
+                        Mockito.eq(processDefinitionKey),
+                        Mockito.eq(ProcessConstants.HANDOVER_VEHICLE_TASK_NAME),
+                        Mockito.eq(processInstanceKey)))
+                .thenReturn(Optional.of(TaskDetail.builder().id(taskId).build()));
+
+        when(zeebeClientWrapper.completeCommand(
+                        taskId, Map.of("allChecksDone", Boolean.valueOf(details.allChecksDone()))))
+                .thenReturn(response);
+
+        this.mockMvc
+                .perform(post("/carworkflowcloud/vehicleHandover/" + processDefinitionKey + "/" + processInstanceKey)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtils.asJsonString(details)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("COMPLETED_OK")));
+    }
+
+    @Test
+    @SneakyThrows
+    public void testVehicleHandoverFailed() {
+
+        String processDefinitionKey = "1234";
+        String processInstanceKey = "5678";
+        Long taskId = 9999L;
+
+        CompleteJobResponse response = Mockito.mock(CompleteJobResponse.class);
+        VehicleHandoverDetails details = VehicleHandoverDetails.builder()
+                .cleaned(true)
+                .fuelFull(true)
+                .exteriorGood(true)
+                .build();
+
+        when(taskListService.getTaskDetails(
+                        Mockito.eq(processDefinitionKey),
+                        Mockito.eq(ProcessConstants.HANDOVER_VEHICLE_TASK_NAME),
+                        Mockito.eq(processInstanceKey)))
+                .thenReturn(Optional.empty());
+
+        when(zeebeClientWrapper.completeCommand(
+                        taskId, Map.of("allChecksDone", Boolean.valueOf(details.allChecksDone()))))
+                .thenReturn(response);
+
+        this.mockMvc
+                .perform(post("/carworkflowcloud/vehicleHandover/" + processDefinitionKey + "/" + processInstanceKey)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtils.asJsonString(details)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("COMPLETED_FAILED")));
     }
 }

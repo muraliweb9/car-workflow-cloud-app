@@ -9,11 +9,11 @@ import lombok.Setter;
 @Data
 @Setter(AccessLevel.NONE)
 public class VehicleHandoverDetails {
-    private boolean isClean;
-    private boolean hasFuel;
-    private boolean hasExteriorBeenChecked;
+    private boolean cleaned;
+    private boolean fuelFull;
+    private boolean exteriorGood;
 
     public boolean allChecksDone() {
-        return isClean() && isHasFuel() && isHasExteriorBeenChecked();
+        return isCleaned() && isFuelFull() && isExteriorGood();
     }
 }
