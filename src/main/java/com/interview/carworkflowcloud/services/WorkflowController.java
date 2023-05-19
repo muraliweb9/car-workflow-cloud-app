@@ -8,8 +8,6 @@ import com.interview.carworkflowcloud.data.TaskDetail;
 import com.interview.carworkflowcloud.data.VehicleHandoverDetails;
 import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
-import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,28 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/carworkflowcloud")
 @Validated
 @Slf4j
-public class WorkflowController {
-
-    private final ZeebeClientWrapper zeebeClient;
-
-    private final TaskListService taskListService;
+public class WorkflowController extends AbstractWorkflowController {
 
     public WorkflowController(ZeebeClientWrapper zeebeClient, TaskListService taskListService) {
-        this.zeebeClient = zeebeClient;
-        this.taskListService = taskListService;
+        super(zeebeClient, taskListService);
     }
 
     @PostMapping("/startProcess")
     public ProcessInstanceEventDto startProcess() {
-        HashMap<String, Object> variables = new HashMap<String, Object>();
-
-        ProcessInstanceEvent event = zeebeClient.newInstance(variables);
-        return ProcessInstanceEventDto.builder()
-                .processDefinitionKey(event.getProcessDefinitionKey())
-                .bpmnProcessId(event.getBpmnProcessId())
-                .version(event.getVersion())
-                .processInstanceKey(event.getProcessInstanceKey())
-                .build();
+        return super.startProcess();
     }
 
     @PostMapping("enterCustomerDetails/{processDefinitionKey}/{processInstanceId}")
