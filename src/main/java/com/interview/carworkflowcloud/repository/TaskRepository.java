@@ -10,6 +10,6 @@ public interface TaskRepository extends ListCrudRepository<TaskDetail, String> {
 
     Optional<TaskDetail> findById(String id);
 
-    Optional<TaskDetail> findByProcessDefinitionKeyAndTaskDefinitionIdAndProcessInstanceKey(
-            String processDefinitionKey, String taskDefinitionId, String processInstanceKey);
+    Optional<TaskDetail> findByProcessDefinitionKeyAndProcessInstanceKeyAndTaskDefinitionId(
+            String processDefinitionKey, String processInstanceKey, String taskDefinitionId);
 }

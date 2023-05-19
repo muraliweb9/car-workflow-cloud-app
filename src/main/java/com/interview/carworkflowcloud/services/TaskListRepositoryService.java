@@ -18,8 +18,8 @@ public class TaskListRepositoryService implements TaskListService {
             String processDefinitionKey, String taskDefinitionId, String processInstanceKey) {
 
         Optional<TaskDetail> taskDetailsOpt =
-                taskRepository.findByProcessDefinitionKeyAndTaskDefinitionIdAndProcessInstanceKey(
-                        processDefinitionKey, taskDefinitionId, processInstanceKey);
+                taskRepository.findByProcessDefinitionKeyAndProcessInstanceKeyAndTaskDefinitionId(
+                        processDefinitionKey, processInstanceKey, taskDefinitionId);
 
         return taskDetailsOpt;
     }
