@@ -122,7 +122,8 @@ public class CarworkflowProcessTest {
 
         // zeebeTestEngine.waitForIdleState(Duration.ofSeconds(processTestTimeout));
 
-        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "handover-vehicle");
+        ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(
+                processInstance, ProcessConstants.HANDOVER_VEHICLE_TASK_NAME);
 
         BpmnAssert.assertThat(processInstance)
                 .hasPassedElement("handover-vehicle")
@@ -160,7 +161,7 @@ public class CarworkflowProcessTest {
                 processInstance,
                 ProcessConstants.HANDOVER_VEHICLE_TASK_NAME,
                 Map.of("allChecksDone", Boolean.TRUE),
-                "enter-customer-details");
+                ProcessConstants.CUSTOMER_DETAILS_TASK_NAME);
 
         ZeebeTestThreadSupport.waitForProcessInstanceHasPassedElement(processInstance, "check-handover");
 
@@ -201,10 +202,6 @@ public class CarworkflowProcessTest {
         }
 
         // And complete it passing the variables
-        if (variables != null && variables.size() > 0) {
-            zeebeClient.completeCommand(userTaskJob.getKey(), variables);
-        } else {
-            zeebeClient.completeCommand(userTaskJob.getKey());
-        }
+        zeebeClient.completeCommand(userTaskJob.getKey(), variables);
     }
 }

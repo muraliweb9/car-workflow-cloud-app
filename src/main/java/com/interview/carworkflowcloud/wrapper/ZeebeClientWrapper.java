@@ -35,13 +35,6 @@ public class ZeebeClientWrapper {
         return response;
     }
 
-    public CompleteJobResponse completeCommand(final Long jobKey) {
-        CompleteJobResponse response =
-                zeebeClient.newCompleteCommand(jobKey).send().join(); // Blocking behaviour - limited for scalability
-
-        return response;
-    }
-
     public ProcessInstanceEvent newInstance(Map<String, Object> variables) {
         ProcessInstanceEvent event = zeebeClient
                 .newCreateInstanceCommand()
