@@ -52,7 +52,6 @@ public class FinaliseBooking {
         boolean allChecksDone = true;
 
         BookingRecord record = BookingRecord.builder()
-                .id("1")
                 .customerDetails(cust)
                 .car(car)
                 .allChecksDone(allChecksDone)
