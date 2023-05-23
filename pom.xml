@@ -55,8 +55,19 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        <!--==== Spring Cloud Consul =====-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-all</artifactId>
+        </dependency>
+        <!--======= Spring Cloud Config =======-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-consul-config</artifactId>-->
+        <!--        </dependency>-->
 
-<!--        <dependency>-->
+
+        <!--        <dependency>-->
 <!--            <groupId>org.springframework.cloud</groupId>-->
 <!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
 <!--            <exclusions>-->
