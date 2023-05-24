@@ -11,22 +11,31 @@ import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import java.util.List;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class FinaliseBooking {
 
-    private ZeebeClientWrapper zeebeClient;
+    private final ZeebeClientWrapper zeebeClient;
 
-    public FinaliseBooking(ZeebeClientWrapper zeebeClient) {
-        this.zeebeClient = zeebeClient;
+    private final DiscoveryClient discoveryClient;
+
+    public void log() {
+
+        List<String> services = discoveryClient.getServices();
+
+        services.stream().forEach(s -> discoveryClient.getInstances(s).stream().forEach(i -> {
+            log.info("Service {}, Service Instance {}", s, i);
+        }));
     }
-
-    // @GrpcC
 
     @JobWorker(type = "finaliseBooking", fetchAllVariables = true, autoComplete = true)
     @ZeebeWorker

@@ -66,6 +66,13 @@ server:
   error:
     # e.g. when an 500 error is displayed will have the underlying error message
     include-message: always
+grpc:
+  client:
+    cloud-grpc-server:
+      address: 'discovery:///cloud-grpc-server'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
 zeebe:
   client:
     cloud:
