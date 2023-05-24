@@ -26,6 +26,7 @@ public class FinaliseBooking {
         this.zeebeClient = zeebeClient;
     }
 
+
     @JobWorker(type = "finaliseBooking", fetchAllVariables = true, autoComplete = true)
     @ZeebeWorker
     public void finaliseBooking(
