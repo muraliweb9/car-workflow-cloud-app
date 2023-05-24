@@ -17,37 +17,57 @@
         <java.version>17</java.version>
         <spring-boot-admin.version>3.0.2</spring-boot-admin.version>
         <spring-cloud.version>2022.0.2</spring-cloud.version>
-        <zeebe.version>8.1.17</zeebe.version>
+        <spring-zeebe.version>8.2.1</spring-zeebe.version>
+        <grpc-starter.version>2.14.0.RELEASE</grpc-starter.version>
+        <commons-lang.version>3.12.0</commons-lang.version>
+        <spotless-plugin.version>2.36.0</spotless-plugin.version>
     </properties>
     <dependencies>
-        <!--========= gRPC Stubs =======-->
+        <!--========= gRPC Stubs ========-->
         <dependency>
             <groupId>com.interview.test</groupId>
             <artifactId>car-hire-proto</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!--============ Web ============-->
+        <!--============ Web =============-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--========== Actuator =========-->
+        <!--========== Actuator ==========-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--=========== Zeebe ===========-->
+        <!--=========== Zeebe ============-->
+<!--        <dependency>-->
+<!--            <groupId>io.camunda</groupId>-->
+<!--            <artifactId>spring-zeebe-starter</artifactId>-->
+<!--            <version>${zeebe.version}</version>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>io.camunda</groupId>
-            <artifactId>spring-zeebe-starter</artifactId>
-            <version>${zeebe.version}</version>
+            <groupId>io.camunda.spring</groupId>
+            <artifactId>spring-boot-starter-camunda</artifactId>
+            <version>${spring-zeebe.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!--===== Security - OAuth2 =====-->
+        <!--==== Security - OAuth2 ======-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
-        <!--======== Spring Boot Admin ========-->
+        <!--===== Spring Boot Admin =====-->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
@@ -71,35 +91,22 @@
         <!--            <groupId>org.springframework.cloud</groupId>-->
         <!--            <artifactId>spring-cloud-starter-consul-config</artifactId>-->
         <!--        </dependency>-->
-
-
-        <!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>com.google.guava</groupId>-->
-<!--                    <artifactId>guava</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-        <!--========== gRPC Client Spring Boot starter ==========-->
+        <!--=== gRPC Client Spring Boot starter ===-->
         <dependency>
             <groupId>net.devh</groupId>
             <artifactId>grpc-client-spring-boot-starter</artifactId>
-            <version>2.14.0.RELEASE</version>
+            <version>${grpc-starter.version}</version>
         </dependency>
         <!--==========Commons Lang ==========-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>${commons-lang.version}</version>
         </dependency>
         <!--========== Lombok ==========-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <!-- Exposes the OpenAPI documentation -->
         <!-- e.g. at http://localhost:50598/swagger-ui/index.html -->
@@ -115,10 +122,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.camunda</groupId>-->
+<!--            <artifactId>spring-zeebe-test</artifactId>-->
+<!--            <version>${zeebe.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>io.camunda</groupId>
-            <artifactId>spring-zeebe-test</artifactId>
-            <version>${zeebe.version}</version>
+            <groupId>io.camunda.spring</groupId>
+            <artifactId>spring-boot-starter-camunda-test</artifactId>
+            <version>${spring-zeebe.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -130,7 +143,7 @@
         <dependency>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.36.0</version>
+            <version>${spotless-plugin.version}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableZeebeClient
-@Deployment(resources = {"process.bpmn"})
+@Deployment(resources = "classpath:process.bpmn")
 public class CarWorkflowCloudAppApplication {
 
     public static void main(String[] args) {
