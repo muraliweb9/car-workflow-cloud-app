@@ -1,1 +1,1 @@
-![Workflow](C:\gitprojects\car-workflow-cloud-app\docs\workflow.jpg)
+![Workflow](docs/workflow.jpg)
