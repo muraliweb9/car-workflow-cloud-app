@@ -5,19 +5,21 @@ import com.interview.carworkflowcloud.data.BookingRecord;
 import com.interview.carworkflowcloud.data.Car;
 import com.interview.carworkflowcloud.data.CustomerDetails;
 import com.interview.carworkflowcloud.wrapper.ZeebeClientWrapper;
+import com.interview.proto.carrecords.service.RecordsServiceGrpc;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
-import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -27,6 +29,9 @@ public class FinaliseBooking {
     private final ZeebeClientWrapper zeebeClient;
 
     private final DiscoveryClient discoveryClient;
+
+    // @GrpcClient("car-records-service")
+    private RecordsServiceGrpc.RecordsServiceBlockingStub recordsServiceStub;
 
     public void log() {
 

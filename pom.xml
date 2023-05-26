@@ -56,12 +56,12 @@
             <groupId>io.camunda.spring</groupId>
             <artifactId>spring-boot-starter-camunda</artifactId>
             <version>${spring-zeebe.version}</version>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>io.grpc</groupId>-->
-<!--                    <artifactId>grpc-core</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--==== Security - OAuth2 ======-->
         <dependency>
@@ -93,11 +93,11 @@
         <!--            <artifactId>spring-cloud-starter-consul-config</artifactId>-->
         <!--        </dependency>-->
         <!--=== gRPC Client Spring Boot starter ===-->
-<!--        <dependency>-->
-<!--            <groupId>net.devh</groupId>-->
-<!--            <artifactId>grpc-client-spring-boot-starter</artifactId>-->
-<!--            <version>${grpc-starter.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>${grpc-starter.version}</version>
+        </dependency>
         <!--==========Commons Lang ==========-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -141,11 +141,11 @@
             <scope>test</scope>
         </dependency>
         <!--===== Code Clean =====-->
-        <!--dependency>
+        <dependency>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
             <version>${spotless-plugin.version}</version>
-        </dependency-->
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

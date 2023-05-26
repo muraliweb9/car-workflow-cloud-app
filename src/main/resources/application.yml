@@ -4,8 +4,10 @@ spring:
     custom:
       config:
         taskService: api # api or repo
-  #main:
-  #  allow-bean-definition-overriding: true
+
+  main:
+    allow-circular-references: false
+    #allow-bean-definition-overriding: true
   boot:
     admin:
       client:
@@ -68,11 +70,11 @@ server:
     include-message: always
 grpc:
   client:
-    cloud-grpc-server:
-      address: 'discovery:///cloud-grpc-server'
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      negotiationType: plaintext
+    car-records-app:
+      address: discovery:///car-records-app
+      #enableKeepAlive: true
+      #keepAliveWithoutCalls: true
+      #negotiationType: plaintext
 zeebe:
   client:
     cloud:

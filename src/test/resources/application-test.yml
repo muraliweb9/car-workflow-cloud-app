@@ -17,8 +17,8 @@ spring:
       discovery:
         enabled: false
       enabled: false
-eureka:
-  client:
-    enabled: false
-    registerWithEureka: false # don't register with Eureka
-    fetchRegistry: false
+#eureka:
+#  client:
+#    enabled: false
+#    registerWithEureka: false # don't register with Eureka
+#    fetchRegistry: false
