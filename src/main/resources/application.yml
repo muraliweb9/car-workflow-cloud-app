@@ -82,9 +82,9 @@ zeebe:
     cloud:
       # Cluster URL: e.g. 68446f73-e278-44a3-b676-04592b9bc0d3.ont-1.zeebe.camunda.io
       region: ont-1
-      clusterId: 8277d56d-5241-4ce6-afde-f8e045a1d318
-      clientId: ngxg-SwrbVKIdr3-unly3C_JUClFOMON
-      clientSecret: JUL7GZ4MUkK67PfOpjdYfCfnFRuZ2xQ8W6zsMe41qI5r3buRbmGRguiMBsdHYh3U
+      clusterId: 2e9a6d1a-48a1-4c58-9bc6-691e931a348c
+      clientId: XVyX8sshfccX~7uHmjv72_bwRQdWnKOL
+      clientSecret: 73F8VT~X0qvY9_rgtH-ZKVqLY.y9dAwdL1kk0O8HyaME406xSR20WlH4X.1UNp73
       oAuthUrl: https://login.cloud.camunda.io/oauth/token
     api:
       taskSearchUrl: https://${zeebe.client.cloud.region}.tasklist.camunda.io/${zeebe.client.cloud.clusterId}/v1/tasks/search
