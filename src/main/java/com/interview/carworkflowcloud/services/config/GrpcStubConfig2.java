@@ -6,11 +6,9 @@ import com.interview.proto.carrecords.service.RecordsServiceGrpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
-@Configuration
-@DependsOn("grpcStubConfig")
+// @Configuration
+// @DependsOn("grpcStubConfig")
 class GrpcStubConfig2 {
     @Bean
     public FinaliseBooking finaliseBooking(

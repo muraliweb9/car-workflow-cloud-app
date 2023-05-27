@@ -20,8 +20,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
 
-// @Component
+@Component
+@DependsOn("grpcStubConfig")
 @Slf4j
 @AllArgsConstructor
 public class FinaliseBooking {
@@ -48,7 +51,7 @@ public class FinaliseBooking {
                 .build();
         RecordSaveResponse resp = recordsServiceStub.saveRecord(req);
 
-        log.info("Response {}", resp);
+        log.info("Response is {}", resp);
     }
 
     @JobWorker(type = "finaliseBooking", fetchAllVariables = true, autoComplete = true)
