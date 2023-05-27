@@ -16,6 +16,8 @@ spring:
         # When shut down deregisters from spring boot admin
         auto-deregistration: true
   cloud:
+    discovery:
+      enabled: true
     consul:
       host: localhost
       port: 8500
@@ -72,9 +74,9 @@ grpc:
   client:
     car-records-app:
       address: discovery:///car-records-app
-      #enableKeepAlive: true
-      #keepAliveWithoutCalls: true
-      #negotiationType: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
 zeebe:
   client:
     cloud:
