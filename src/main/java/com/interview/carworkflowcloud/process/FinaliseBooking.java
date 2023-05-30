@@ -20,11 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
 
-@Component
-@DependsOn("grpcStubConfig")
 @Slf4j
 @AllArgsConstructor
 public class FinaliseBooking {

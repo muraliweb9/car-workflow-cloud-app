@@ -6,6 +6,9 @@ import net.devh.boot.grpc.client.inject.GrpcClientBean;
 import net.devh.boot.grpc.client.inject.GrpcClientBeans;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Create a @GrpcClientBean for each gRPC stub
+ */
 @Configuration(value = "grpcStubConfig")
 @GrpcClientBeans({
     @GrpcClientBean(
