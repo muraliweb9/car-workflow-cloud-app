@@ -83,6 +83,15 @@ public class FinaliseBooking {
 
         Map<String, Object> variables = Map.of("bookingRecord", record);
 
+        RecordSaveRequest req = RecordSaveRequest.newBuilder()
+                .setFirstName("mura")
+                .setLastName("karu")
+                .setLicenceNumber("1234")
+                .build();
+        RecordSaveResponse resp = recordsServiceStub.saveRecord(req);
+
+        log.info("Response is {}", resp);
+
         CompleteJobResponse response = zeebeClient.completeCommand(job, variables);
 
         log.info("FinaliseBooking CompleteJobResponse: [{}]", response);
