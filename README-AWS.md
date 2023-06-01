@@ -1,6 +1,28 @@
-# Car Workflow Cloud App
+# Car Workflow Cloud App - AWS Deployment
 
-## BPMN Diagram
+## AWS Steps
+
+## Create a key pair
+
+## Create an ECS Cluster
+
+## Create an EC2 Instance
+
+## Create an S3 Bucket
+
+## Copy Spring Boot Jar to S3 bucket
+
+## Log into EC2 Instance
+
+## Install Java (correct version) on EC2 instance
+
+## Get the Spring Boot Jar from S3 bucket to EC2 Instnace
+
+## Run Spring Boot Application
+
+
+# *** IGNORE BELOW THIS***
+
 
 ![Workflow](docs/workflow.png)
 
