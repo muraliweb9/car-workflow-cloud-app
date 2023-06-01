@@ -21,13 +21,13 @@
 ![Copy to S3 bucket step 5](docs/aws_s3_copy_5.png)
 
 ## Log into EC2 Instance
-![Log in EC2 step 1](docs/aws_ec2_connect_1.png)
-![Log in EC2 step 2](docs/aws_ec2_connect_2.png)
-![Log in EC2 step 3](docs/aws_ec2_connect_3.png)
-![Log in EC2 step 4](docs/aws_ec2_connect_4.png)
-![Log in EC2 step 5](docs/aws_ec2_connect_5.png)
-The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-cloud-key.ppk`
-![Log in EC2 step 6](docs/aws_ec2_connect_6.png)
+![Log in EC2 step 1](docs/aws_ec2_connect_1.png)<br>
+![Log in EC2 step 2](docs/aws_ec2_connect_2.png)<br>
+![Log in EC2 step 3](docs/aws_ec2_connect_3.png)<br>
+![Log in EC2 step 4](docs/aws_ec2_connect_4.png)<br>
+![Log in EC2 step 5](docs/aws_ec2_connect_5.png)<br>
+The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-cloud-key.ppk`<br>
+![Log in EC2 step 6](docs/aws_ec2_connect_6.png)<br>
 
 ## Install Java (correct version) on EC2 instance
 
