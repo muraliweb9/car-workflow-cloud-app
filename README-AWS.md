@@ -30,6 +30,8 @@ The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-clou
 ![Log in EC2 step 6](docs/aws_ec2_connect_6.png)<br>
 
 ## Install Java (correct version) on EC2 instance
+![Install Java EC2 step 1](docs/aws_ec2_java_1.png)<br>
+![Install Java EC2 step 2](docs/aws_ec2_java_2.png)<br>
 
 ## Get the Spring Boot Jar from S3 bucket to EC2 Instnace
 
