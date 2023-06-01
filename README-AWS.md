@@ -14,6 +14,11 @@
 ![New S3 bucket step 3](docs/aws_s3_create_3.png)
 
 ## Copy Spring Boot Jar to S3 bucket
+![Copy to S3 bucket step 1](docs/aws_s3_copy_1.png)
+![Copy to S3 bucket step 2](docs/aws_s3_copy_2.png)
+![Copy to S3 bucket step 3](docs/aws_s3_copy_3.png)
+![Copy to S3 bucket step 4](docs/aws_s3_copy_4.png)
+![Copy to S3 bucket step 5](docs/aws_s3_copy_5.png)
 
 ## Log into EC2 Instance
 
