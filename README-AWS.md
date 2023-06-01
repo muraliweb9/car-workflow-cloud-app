@@ -9,6 +9,9 @@
 ## Create an EC2 Instance
 
 ## Create an S3 Bucket
+![New S3 bucket step 1](docs/aws_s3_create_1.png)
+![New S3 bucket step 2](docs/aws_s3_create_2.png)
+![New S3 bucket step 3](docs/aws_s3_create_3.png)
 
 ## Copy Spring Boot Jar to S3 bucket
 
