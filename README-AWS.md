@@ -27,13 +27,15 @@ Save the private key locally for use with Putty.
 ##### Step 1
 ![New Instance step 1](docs/aws_ec2_launch_1.png)
 ##### Step 2
-![New Instance step 1](docs/aws_ec2_launch_2.png)
+![New Instance step 2](docs/aws_ec2_launch_2.png)
 ##### Step 3
-![New Instance step 1](docs/aws_ec2_launch_3.png)
+![New Instance step 3](docs/aws_ec2_launch_3.png)
 ##### Step 4
-![New Instance step 1](docs/aws_ec2_launch_4.png)
+![New Instance step 4](docs/aws_ec2_launch_4.png)
 ##### Step 5
-![New Instance step 1](docs/aws_ec2_launch_5.png)
+![New Instance step 5](docs/aws_ec2_launch_5.png)
+##### Step 6
+![New Instance step 6](docs/aws_ec2_launch_6.png)
 
 ### Create an S3 Bucket
 ##### Step 1
@@ -44,8 +46,8 @@ Save the private key locally for use with Putty.
 ![New S3 bucket step 3](docs/aws_s3_create_3.png)
 
 ### Copy Spring Boot Jar to S3 bucket
-##### Step 1
-![Copy to S3 bucket step 1](docs/aws_s3_copy_1.png)
+##### Step
+
 ##### Step 2
 ![Copy to S3 bucket step 2](docs/aws_s3_copy_2.png)
 ##### Step 3
