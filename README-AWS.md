@@ -46,8 +46,8 @@ Save the private key locally for use with Putty.
 ![New S3 bucket step 3](docs/aws_s3_create_3.png)
 
 ### Copy Spring Boot Jar to S3 bucket
-##### Step
-
+##### Step 1
+![Copy to S3 bucket step 1](docs/aws_s3_copy_1.png)
 ##### Step 2
 ![Copy to S3 bucket step 2](docs/aws_s3_copy_2.png)
 ##### Step 3
@@ -93,3 +93,10 @@ The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-clou
 ![Run SBA in EC2 step 2](docs/aws_ec2_run_2.png)
 ##### Step 3
 ![Run SBA in EC2 step 3](docs/aws_ec2_run_3.png)
+##### Step 4
+![Run SBA in EC2 step 4](docs/aws_ec2_run_4.png)
+##### Step 3
+![Run SBA in EC2 step 5](docs/aws_ec2_run_5.png)
+##### Step 3
+![Run SBA in EC2 step 6](docs/aws_ec2_run_6.png)
+
