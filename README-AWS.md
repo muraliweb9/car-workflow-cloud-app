@@ -27,6 +27,12 @@
 ![Copy to S3 bucket step 4](docs/aws_s3_copy_4.png)
 #### Step 5
 ![Copy to S3 bucket step 5](docs/aws_s3_copy_5.png)
+#### Step 6
+![Copy to S3 bucket step 6](docs/aws_s3_copy_6.png)
+#### Step 7
+![Copy to S3 bucket step 7](docs/aws_s3_copy_7.png)
+#### Step 8
+![Copy to S3 bucket step 8](docs/aws_s3_copy_8.png)
 
 ## Log into EC2 Instance
 #### Step 1
