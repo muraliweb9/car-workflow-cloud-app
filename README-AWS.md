@@ -10,6 +10,7 @@
 ##### Step 4
 ![New Key Pair step 4](docs/aws_ec2_key_4.png)
 ##### Step 5
+Save the private key locally for use with Putty.
 ![New Key Pair step 5](docs/aws_ec2_key_5.png)
 
 ### Create an ECS Cluster
@@ -23,6 +24,16 @@
 ![New Cluster step 4](docs/aws_ecs_create_4.png)
 
 ### Create an EC2 Instance
+##### Step 1
+![New Instance step 1](docs/aws_ec2_launch_1.png)
+##### Step 2
+![New Instance step 1](docs/aws_ec2_launch_2.png)
+##### Step 3
+![New Instance step 1](docs/aws_ec2_launch_3.png)
+##### Step 4
+![New Instance step 1](docs/aws_ec2_launch_4.png)
+##### Step 5
+![New Instance step 1](docs/aws_ec2_launch_5.png)
 
 ### Create an S3 Bucket
 ##### Step 1
