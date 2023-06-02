@@ -9,28 +9,44 @@
 ## Create an EC2 Instance
 
 ## Create an S3 Bucket
+#### Step 1
 ![New S3 bucket step 1](docs/aws_s3_create_1.png)
+#### Step 2
 ![New S3 bucket step 2](docs/aws_s3_create_2.png)
+#### Step 3
 ![New S3 bucket step 3](docs/aws_s3_create_3.png)
 
 ## Copy Spring Boot Jar to S3 bucket
+#### Step 1
 ![Copy to S3 bucket step 1](docs/aws_s3_copy_1.png)
+#### Step 2
 ![Copy to S3 bucket step 2](docs/aws_s3_copy_2.png)
+#### Step 3
 ![Copy to S3 bucket step 3](docs/aws_s3_copy_3.png)
+#### Step 4
 ![Copy to S3 bucket step 4](docs/aws_s3_copy_4.png)
+#### Step 5
 ![Copy to S3 bucket step 5](docs/aws_s3_copy_5.png)
 
 ## Log into EC2 Instance
-![Log in EC2 step 1](docs/aws_ec2_connect_1.png)<br>
-![Log in EC2 step 2](docs/aws_ec2_connect_2.png)<br>
-![Log in EC2 step 3](docs/aws_ec2_connect_3.png)<br>
-![Log in EC2 step 4](docs/aws_ec2_connect_4.png)<br>
+#### Step 1
+![Log in EC2 step 1](docs/aws_ec2_connect_1.png)
+#### Step 2
+![Log in EC2 step 2](docs/aws_ec2_connect_2.png)
+#### Step 3
+![Log in EC2 step 3](docs/aws_ec2_connect_3.png)
+#### Step 4
+![Log in EC2 step 4](docs/aws_ec2_connect_4.png)
+#### Step 5
 ![Log in EC2 step 5](docs/aws_ec2_connect_5.png)<br>
-The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-cloud-key.ppk`<br>
+The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-cloud-key.ppk`
+#### Step 6
 ![Log in EC2 step 6](docs/aws_ec2_connect_6.png)<br>
 
 ## Install Java (correct version) on EC2 instance
-![Install Java EC2 step 1](docs/aws_ec2_java_1.png)<br>
+#### Step 1
+![Install Java EC2 step 1](docs/aws_ec2_java_1.png)
+#### Step 2
 ![Install Java EC2 step 2](docs/aws_ec2_java_2.png)<br>
 
 ## Get the Spring Boot Jar from S3 bucket to EC2 Instnace
