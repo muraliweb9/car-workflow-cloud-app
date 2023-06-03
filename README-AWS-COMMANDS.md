@@ -38,9 +38,19 @@ Content-Disposition: attachment; filename="userdata.txt"
 /bin/echo "Running custom script at Instance start !!"
 --//--
 ````
+
 * Check in Console.<br>
 ![User Data step 4](docs/aws_ec2_connect_user_data_4.png)<br>
 ![User Data step 5](docs/aws_ec2_connect_user_data_5.png)<br>
 ![User Data step 6](docs/aws_ec2_connect_user_data_6.png) <br>
+
+* Look at log files here.<br>
+````shell
+[ec2-user@ip-172-31-14-204 ~]$ vi /var/log/cloud-init-output.log 
+[ec2-user@ip-172-31-14-204 ~]$ vi /var/lib/cloud/instances/i-069e2f983d16fdc4f/
+cloud-config.txt    handlers/           scripts/            user-data.txt       vendor-data.txt     vendor-data2.txt    
+datasource          obj.pkl             sem/                user-data.txt.i     vendor-data.txt.i   vendor-data2.txt.i  
+[ec2-user@ip-172-31-14-204 ~]$ vi /var/lib/cloud/instances/i-069e2f983d16fdc4f/
+````
 
 ### CLI
