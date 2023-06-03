@@ -9,10 +9,10 @@
 * The "script" to run.
 ![User Data step 2](docs/aws_ec2_connect_user_data_2.png)
 
-* Start the instance
+* Start the instance.
 ![User Data step 3](docs/aws_ec2_connect_user_data_3.png)
 
-* The script
+* The script.
 ````shell
 Content-Type: multipart/mixed; boundary="//"
 MIME-Version: 1.0
@@ -38,7 +38,7 @@ Content-Disposition: attachment; filename="userdata.txt"
 /bin/echo "Running custom script at Instance start !!"
 --//--
 ````
-* Check in Console
+* Check in Console.
 ![User Data step 4](docs/aws_ec2_connect_user_data_4.png)
 ![User Data step 5](docs/aws_ec2_connect_user_data_5.png)
 ![User Data step 6](docs/aws_ec2_connect_user_data_6.png) 
