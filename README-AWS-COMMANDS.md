@@ -3,16 +3,16 @@
 ### EC2 Connect
 
 #### User Data
-* These are items such as start up scripts to run on instance create and star.
+* These are items such as start up scripts to run on instance create and star.<br>
 ![User Data step 1](docs/aws_ec2_connect_user_data_1.png)
 
-* The "script" to run.
+* The "script" to run.<br>
 ![User Data step 2](docs/aws_ec2_connect_user_data_2.png)
 
-* Start the instance.
+* Start the instance.<br>
 ![User Data step 3](docs/aws_ec2_connect_user_data_3.png)
 
-* The script.
+* The script.<br>
 ````shell
 Content-Type: multipart/mixed; boundary="//"
 MIME-Version: 1.0
@@ -38,9 +38,9 @@ Content-Disposition: attachment; filename="userdata.txt"
 /bin/echo "Running custom script at Instance start !!"
 --//--
 ````
-* Check in Console.
-![User Data step 4](docs/aws_ec2_connect_user_data_4.png)
-![User Data step 5](docs/aws_ec2_connect_user_data_5.png)
-![User Data step 6](docs/aws_ec2_connect_user_data_6.png) 
+* Check in Console.<br>
+![User Data step 4](docs/aws_ec2_connect_user_data_4.png)<br>
+![User Data step 5](docs/aws_ec2_connect_user_data_5.png)<br>
+![User Data step 6](docs/aws_ec2_connect_user_data_6.png) <br>
 
 ### CLI
