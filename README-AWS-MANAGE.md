@@ -1,10 +1,11 @@
 # AWS EC2 Management
-# Table of Contents
-1. [EC2 Console](#EC2 Console)
-2. [Instance Console](#Instance Console)
+
+### Table of Contents
+1. [EC2 Console](#ec2Console)
+2. [Instance Console](#instanceConsole)
 3. [CLI](#CLI)
 
-### EC2 Console
+### EC2 Console<a name="ec2Console"></a>
 
 #### User Data
 * These are items such as start up scripts to run on instance create and star.<br>
@@ -68,7 +69,7 @@ systemctl enable httpd
 echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ````
 
-### Instance Console
+### Instance Console<a name="instanceConsole"></a>
 * Find logged in user<br>
 ``whoami``
 * Become root user<br>
@@ -96,4 +97,4 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 * ss command<br>
 ``sudo ss -lntp``
 
-### CLI
+### CLI<a name="CLI"></a>
