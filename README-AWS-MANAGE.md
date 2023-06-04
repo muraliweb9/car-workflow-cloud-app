@@ -1,9 +1,8 @@
 # AWS EC2 Management
 # Table of Contents
 1. [EC2 Console](#EC2 Console)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
-4. [CLI](#CLI)
+2. [Instance Console](#Instance Console)
+3. [CLI](#CLI)
 
 ### EC2 Console
 
