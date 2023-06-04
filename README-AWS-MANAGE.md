@@ -52,5 +52,47 @@ cloud-config.txt    handlers/           scripts/            user-data.txt       
 datasource          obj.pkl             sem/                user-data.txt.i     vendor-data.txt.i   vendor-data2.txt.i  
 [ec2-user@ip-172-31-14-204 ~]$ vi /var/lib/cloud/instances/i-069e2f983d16fdc4f/
 ````
+### Example user data for launching instances
+````shell
+#!/bin/bash
+# Use this for your user data (script from top to bottom)
+# install httpd (Linux 2 version)
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+````
+
+### Instance Console
+
+
+
+* Find logged in user<br>
+``whoami``
+* Become root user<br>
+``sudo -i``
+* Update available packages<br>
+``yum update``
+* Update available packages (no user input - e.g. user data)<br>
+``yum update -y``
+* List available packages - starting with java<br>
+``yum list java*``
+* List available packages - starting with java and version 17<br>
+``yum list java* | grep 17*``
+* Yum install git<br>
+``yum install git``
+* Yum install Java 17 (when not root user)<br>
+``sudo yum install java-17-amazon-corretto.x86_64``
+* Yum remove Java 17 (when not root user)<br>
+``sudo yum remove java-17-amazon-corretto.x86_64``
+* List java alternatives and pick version (interactive)<br>
+``alternatives --config java``
+* Check on listening ports<br>
+``netstat -tulpn``
+* Check locally running service<br>
+``curl http://localhost:8080``
+* ss command<br>
+``sudo ss -lntp``
 
 ### CLI
