@@ -1,6 +1,11 @@
 # AWS EC2 Management
+# Table of Contents
+1. [EC2 Console](#EC2 Console)
+2. [Example2](#example2)
+3. [Third Example](#third-example)
+4. [CLI](#CLI)
 
-### EC2 Connect
+### EC2 Console
 
 #### User Data
 * These are items such as start up scripts to run on instance create and star.<br>
@@ -52,7 +57,7 @@ cloud-config.txt    handlers/           scripts/            user-data.txt       
 datasource          obj.pkl             sem/                user-data.txt.i     vendor-data.txt.i   vendor-data2.txt.i  
 [ec2-user@ip-172-31-14-204 ~]$ vi /var/lib/cloud/instances/i-069e2f983d16fdc4f/
 ````
-### Example user data for launching instances
+#### Example user data for launching instances
 ````shell
 #!/bin/bash
 # Use this for your user data (script from top to bottom)
@@ -65,9 +70,6 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ````
 
 ### Instance Console
-
-
-
 * Find logged in user<br>
 ``whoami``
 * Become root user<br>
