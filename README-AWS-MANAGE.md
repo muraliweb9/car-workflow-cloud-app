@@ -5,7 +5,8 @@
 2. [Instance Console](#instanceConsole)
 3. [CLI](#CLI)
 
-### <a name="ec2Console"></a> EC2 Console
+<a name="ec2Console"></a>
+### EC2 Console
 
 #### User Data
 * These are items such as start up scripts to run on instance create and star.<br>
@@ -68,8 +69,8 @@ systemctl start httpd
 systemctl enable httpd
 echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 ````
-
-### <a name="instanceConsole"></a> Instance Console
+<a name="instanceConsole"></a>
+###  Instance Console
 * Find logged in user<br>
 ``whoami``
 * Become root user<br>
@@ -97,4 +98,5 @@ echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
 * ss command<br>
 ``sudo ss -lntp``
 
-<a name="CLI"></a> ### CLI
+<a name="CLI"></a> 
+### CLI
