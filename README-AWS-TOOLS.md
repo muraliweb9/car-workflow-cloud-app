@@ -287,9 +287,9 @@ Destroy complete! Resources: 1 destroyed.
 
 
 ##### Useful terraform commands
-```terraform init```    -> Init the provider e.g. aws
-```terraform apply```   -> Setup infrastructure
-```terraform destroy``` -> Tear down infrastructure
+```terraform init```    -> Init the provider e.g. aws<br>
+```terraform apply```   -> Setup infrastructure<br>
+```terraform destroy``` -> Tear down infrastructure<br>
 
 <a name="nomad"></a>
 ### Nomad
