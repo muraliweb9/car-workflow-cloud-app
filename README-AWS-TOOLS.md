@@ -30,6 +30,7 @@ Ensure `C:\Program Files\Amazon\AWSCLIV2\ ` is in the PATH.
 
 #### Configure AWS CLI
 ![Configure AWS CLI 1](docs/aws_ec2_tools_16.png)<br>
+<a name="awsCliCred"></a>
 ![Configure AWS CLI 2](docs/aws_ec2_tools_17.png)<br>
 
 <a name="consul"></a>
@@ -86,9 +87,18 @@ spring:
 #### Install Terraform
 https://developer.hashicorp.com/terraform/downloads
 
-#### Run Terraform
+#### Setup Terraform
+Run Terraform
 ![Run Terraform 1](docs/aws_ec2_tools_2.png)<br>
+Validate it is installed<br>
+``terraform -help``
 ![Run Terraform 2](docs/aws_ec2_tools_3.png)<br>
+Start to create the .rf file with the provider "aws". 
+The profile default must match the AWS CLI profile [See Here](#awsCliCred).
+![Run Terraform 2](docs/aws_ec2_tools_18.png)<br>
+Install the aws provider<br>
+``terraform init``
+![Run Terraform 2](docs/aws_ec2_tools_19.png)<br>
 
 
 <a name="nomad"></a>
