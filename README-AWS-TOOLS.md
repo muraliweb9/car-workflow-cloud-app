@@ -29,8 +29,10 @@ Ensure `C:\Program Files\Amazon\AWSCLIV2\ ` is in the PATH.
 ![Create Credentials 13](docs/aws_ec2_tools_15_1.png)<br>
 
 #### Configure AWS CLI
+##### Configure
 ![Configure AWS CLI 1](docs/aws_ec2_tools_16.png)<br><br>
 <a name="awsCliCred"></a>
+##### Validate Credentials
 ![Configure AWS CLI 2](docs/aws_ec2_tools_17.png)<br>
 
 <a name="consul"></a>
@@ -93,7 +95,7 @@ Run Terraform<br>
 Validate it is installed<br>
 ``terraform -help``<br>
 ![Run Terraform 2](docs/aws_ec2_tools_3.png)<br>
-Start to create the .rf file with the provider "aws".<br> 
+Start to create the .tf file with the provider "aws".<br> 
 The profile default must match the AWS CLI profile [See Here](#awsCliCred).<br>
 ![Run Terraform 2](docs/aws_ec2_tools_18.png)<br>
 Install the aws provider<br>
