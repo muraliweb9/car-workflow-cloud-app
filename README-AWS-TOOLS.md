@@ -1,10 +1,45 @@
 # AWS EC2 Tools
 
 ### Table of Contents
-1. [Consul](#consul)
+
+1. [AWS CLI](#awsCli)
+2. [Consul](#consul)
 2. [Terraform](#terraform)
 3. [Nomad](#nomad)
 4. [Vault](#vault)
+
+<a name="awsCli"></a>
+### AWS CLI
+#### Install AWS CLI
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+Ensure `C:\Program Files\Amazon\AWSCLIV2\ ` is in the PATH. 
+#### Create Credentials
+![Create Credentials 1](docs/aws_ec2_tools_4.png)<br>
+![Create Credentials 2](docs/aws_ec2_tools_5.png)<br>
+![Create Credentials 3](docs/aws_ec2_tools_6.png)<br>
+![Create Credentials 4](docs/aws_ec2_tools_7.png)<br>
+![Create Credentials 5](docs/aws_ec2_tools_8.png)<br>
+![Create Credentials 6](docs/aws_ec2_tools_9.png)<br>
+![Create Credentials 7](docs/aws_ec2_tools_10.png)<br>
+![Create Credentials 8](docs/aws_ec2_tools_11.png)<br>
+![Create Credentials 9](docs/aws_ec2_tools_12.png)<br>
+![Create Credentials 10](docs/aws_ec2_tools_13.png)<br>
+![Create Credentials 11](docs/aws_ec2_tools_14.png)<br>
+![Create Credentials 12](docs/aws_ec2_tools_15.png)<br>
+
+#### Configure AWS CLI
+![Configure AWS CLI 1](docs/aws_ec2_tools_16.png)<br>
+![Configure AWS CLI 2](docs/aws_ec2_tools_17.png)<br>
+Useful AWS CLI commands
+````shell
+aws configure                    -^> Login - set access key, secret and default region
+aws iam list-users               -^> List all the users
+aws s3 ls                        -^> List all the s3 buckets
+aws s3 ls car-app-cloud-storage  -^> List all the items in s3 bucket (car-app-cloud-storage)
+aws s3api create-bucket --bucket car-app-cloud-storage-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2  -^> Create a new bucket in a region
+aws s3 cp s3://car-app-cloud-storage/springbootadmin-0.0.1-SNAPSHOT.jar s3://car-app-cloud-storage-2/                                   -^> Copy from one bucket to another
+aws lambda list-functions        -^> List all the lambda functions
+````
 
 <a name="consul"></a>
 ### Consul
