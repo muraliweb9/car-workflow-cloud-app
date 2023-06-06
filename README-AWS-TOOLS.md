@@ -26,6 +26,7 @@ Ensure `C:\Program Files\Amazon\AWSCLIV2\ ` is in the PATH.
 ![Create Credentials 10](docs/aws_ec2_tools_13.png)<br>
 ![Create Credentials 11](docs/aws_ec2_tools_14.png)<br>
 ![Create Credentials 12](docs/aws_ec2_tools_15.png)<br>
+![Create Credentials 13](docs/aws_ec2_tools_15_1.png)<br>
 
 #### Configure AWS CLI
 ![Configure AWS CLI 1](docs/aws_ec2_tools_16.png)<br>
