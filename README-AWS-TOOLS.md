@@ -57,6 +57,14 @@ spring:
 <a name="terraform"></a>
 ### Terraform
 
+#### Install Terraform
+https://developer.hashicorp.com/terraform/downloads
+
+#### Run Terraform
+![Run Terraform 1](docs/aws_ec2_tools_2.png)<br>
+![Run Terraform 2](docs/aws_ec2_tools_3.png)<br>
+
+
 <a name="nomad"></a>
 ### Nomad
 
