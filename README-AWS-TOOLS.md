@@ -31,16 +31,6 @@ Ensure `C:\Program Files\Amazon\AWSCLIV2\ ` is in the PATH.
 #### Configure AWS CLI
 ![Configure AWS CLI 1](docs/aws_ec2_tools_16.png)<br>
 ![Configure AWS CLI 2](docs/aws_ec2_tools_17.png)<br>
-Useful AWS CLI commands
-````shell
-aws configure                    -^> Login - set access key, secret and default region
-aws iam list-users               -^> List all the users
-aws s3 ls                        -^> List all the s3 buckets
-aws s3 ls car-app-cloud-storage  -^> List all the items in s3 bucket (car-app-cloud-storage)
-aws s3api create-bucket --bucket car-app-cloud-storage-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2  -^> Create a new bucket in a region
-aws s3 cp s3://car-app-cloud-storage/springbootadmin-0.0.1-SNAPSHOT.jar s3://car-app-cloud-storage-2/                                   -^> Copy from one bucket to another
-aws lambda list-functions        -^> List all the lambda functions
-````
 
 <a name="consul"></a>
 ### Consul
