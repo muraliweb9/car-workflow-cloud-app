@@ -86,6 +86,10 @@ The file is e.g. `C:\gitprojects\security\aws\car-app-cloud-cluster\car-app-clou
 ##### Step 1
 ![Get from S3 bucket step 1](docs/aws_s3_get_1.png)
 
+### Install Consul on EC2
+##### Step 1
+![Get from S3 bucket step 1](docs/aws_s3_get_1.png)
+
 ### Run Spring Boot Application
 ##### Step 1
 ![Run SBA in EC2 step 1](docs/aws_ec2_run_1.png)
