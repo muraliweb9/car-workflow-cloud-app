@@ -291,7 +291,16 @@ Run ```terraform apply``` <br>
 ![Run Terraform 10](docs/aws_ec2_tools_25.png)<br>
 Run ```terraform apply -var "instance_name=VarMyTerraformCluster4"``` <br>
 ![Run Terraform 11](docs/aws_ec2_tools_26.png)<br>
+![Run Terraform 12](docs/aws_ec2_tools_27.png)<br>
+![Run Terraform 13](docs/aws_ec2_tools_28.png)<br>
+Run<br>
+```terraform apply``` <br>
+```terraform output``` <br>
+```shell
+instance_id = "i-02352e718f2346efb"
+instance_public_ip = "3.8.185.176"
 
+```
 ##### Useful terraform commands
 ```terraform init```    -> Init the provider e.g. aws<br>
 ```terraform apply```   -> Setup infrastructure<br>
