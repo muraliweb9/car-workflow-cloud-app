@@ -2,7 +2,7 @@
 
 ### Table of Contents
 1. [Consul](#consul)
-2. [Terraform](#terraForm)
+2. [Terraform](#terraform)
 3. [Nomad](#nomad)
 4. [Vault](#vault)
 
@@ -10,13 +10,13 @@
 ### Consul
 
 #### Install Consul
-![Hashicorp Consul](https://www.hashicorp.com/products/consul)
+https://www.hashicorp.com/products/consul
 
 #### Run Consul
 `consul agent -dev -node MyConsul -http-port=8501`
 
--node : Name of the node
--http-port : The port to use (if not used defaults to 8500)
+-node : Name of the node<br>
+-http-port : The port to use (if not used defaults to 8500)<br>
 ````shell
 C:\Apps\Consul>consul agent -dev -node MyConsul -http-port=8501
 ==> Starting Consul agent...
@@ -34,6 +34,31 @@ C:\Apps\Consul>consul agent -dev -node MyConsul -http-port=8501
              gRPC TLS: Verify Incoming: false, Min Version: TLSv1_2
      Internal RPC TLS: Verify Incoming: false, Verify Outgoing: false (Verify Hostname: false), Min Version: TLSv1_2
 ````
-
-* Check in Conul.<br>
+Check in Conul.<br>
+http://localhost:8501/ui/dc1/services
 ![Check in Consul](docs/aws_ec2_tools_1.png)<br>
+
+#### Service registry
+E.g. in ``application.yml``
+````yaml
+spring:
+  cloud:
+    discovery:
+      enabled: true
+    consul:
+      host: localhost
+      port: 8501
+      discovery:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
+      config:
+        enabled: false
+````
+
+<a name="terraform"></a>
+### Terraform
+
+<a name="nomad"></a>
+### Nomad
+
+<a name="vault"></a>
+### Vault
