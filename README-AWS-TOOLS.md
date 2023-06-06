@@ -284,7 +284,13 @@ Destroy complete! Resources: 1 destroyed.
 ```
 ##### Verify the instance is down in EC2 console
 ![Run Terraform 7](docs/aws_ec2_tools_22.png)<br>
-
+##### Variable substitution in.tf
+![Run Terraform 8](docs/aws_ec2_tools_23.png)<br>
+![Run Terraform 9](docs/aws_ec2_tools_24.png)<br>
+Run ```terraform apply``` <br>
+![Run Terraform 10](docs/aws_ec2_tools_25.png)<br>
+Run ```terraform apply -var "instance_name=VarMyTerraformCluster4"``` <br>
+![Run Terraform 11](docs/aws_ec2_tools_26.png)<br>
 
 ##### Useful terraform commands
 ```terraform init```    -> Init the provider e.g. aws<br>
