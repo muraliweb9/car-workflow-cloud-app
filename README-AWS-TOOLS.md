@@ -319,9 +319,12 @@ The ``nomad-config.hcl`` file is a [configuration](https://developer.hashicorp.c
 Example: 
 1. The ports are overridden
 2. The Consul server is defined
+3. Log level at INFO with a specific log file
+4. Data directory for Nomad to store data
 ```shell
 server {
-  enabled          = true
+  enabled = true
+  data_dir = "C:\\Apps\\Nomad"
 }
 ports {
   http = 14646
@@ -334,6 +337,8 @@ client {
 consul {
   address = "localhost:8501"
 }
+log_level = "INFO"
+log_file = "C:\\Apps\\Nomad\\nomad.log"
 ```
 ````shell
 C:\Apps\Nomad>nomad agent -dev -config=nomad-config.hcl
@@ -351,12 +356,32 @@ C:\Apps\Nomad>nomad agent -dev -config=nomad-config.hcl
 
 ==> Nomad agent started! Log data will stream in below:
 ````
+
+````shell
+    2023-06-14T14:27:16.203+0100 [INFO]  nomad: adding server: server="DESKTOP-UUK27G8.global (Addr: 127.0.0.1:14647) (DC: dc1)"
+    2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: name=raw_exec type=driver plugin_version=0.1.0
+    2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: name=exec type=driver plugin_version=0.1.0
+    2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: name=qemu type=driver plugin_version=0.1.0
+    2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: name=java type=driver plugin_version=0.1.0
+    2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: name=docker type=driver plugin_version=0.1.0
+````
+
+2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: ***name=java*** type=driver plugin_version=0.1.0
+***name=java*** tells us that, later, we cant create Nomad jobs with ***driver = "java"*** <br> 
+
 Check in Nomad.<br>
 http://localhost:14646/ui/jobs
 ![Check in Nomad](docs/aws_ec2_tools_29.png)<br>
-![Check in Nomad](docs/aws_ec2_tools_30.png)<br>
-![Check in Nomad](docs/aws_ec2_tools_31.png)<br>
-![Check in Nomad](docs/aws_ec2_tools_32.png)<br>
+Check Nomad is registerd on Consul.<br>
+![Check in Nomad on Consul](docs/aws_ec2_tools_30.png)<br>
+![Check in Nomad on Consul](docs/aws_ec2_tools_31.png)<br>
+![Check in Nomad on Consul](docs/aws_ec2_tools_32.png)<br>
+
+#### Run Nomad
+Create a Nomad job file
+```shell
+g
+```
 
 <a name="vault"></a>
 ### Vault
