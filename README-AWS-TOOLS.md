@@ -432,6 +432,10 @@ Check in Nomad post job run<br>
 ![Check in Nomad post job run](docs/aws_ec2_tools_34.png)<br>
 ![Check in Nomad post job run](docs/aws_ec2_tools_35.png)<br>
 ![Check in Nomad post job run](docs/aws_ec2_tools_36.png)<br>
+Check in Consul post job run<br>
+![Check in Consul post job run](docs/aws_ec2_tools_37.png)<br>
+![Check in Consul post job run](docs/aws_ec2_tools_38.png)<br>
+
 
 <a name="vault"></a>
 ### Vault

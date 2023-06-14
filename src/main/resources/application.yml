@@ -20,7 +20,7 @@ spring:
       enabled: true
     consul:
       host: localhost
-      port: 8500
+      port: 8501
       discovery:
         instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}:${random.value}}
       config:
