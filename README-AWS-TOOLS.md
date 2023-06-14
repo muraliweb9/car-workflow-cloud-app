@@ -318,7 +318,7 @@ The ``nomad-config.hcl`` file is a [configuration](https://developer.hashicorp.c
 
 Example: 
 1. The ports are overridden
-2. The Consul server is defined
+2. A [Consul](#concul) server is defined, for Nomad to register with
 3. Log level at INFO with a specific log file
 4. Data directory for Nomad to store data
 ```shell
@@ -378,9 +378,27 @@ Check Nomad is registerd on Consul.<br>
 ![Check in Nomad on Consul](docs/aws_ec2_tools_32.png)<br>
 
 #### Run Nomad
-Create a Nomad job file
+Create a Nomad job file as speified [here](https://developer.hashicorp.com/nomad/docs/job-specification).
 ```shell
-g
+job "car-workflow-cloud-app-job" {
+  datacenters = ["dc1"]
+  type        = "service"
+  group "car-workflow-cloud-app-group" {
+    count = 5 // Run 5 instances
+    task "car-workflow-cloud-app" {
+      driver = "java" // This can be java. docker etc.
+      config {
+        jar_path    = "C:\\gitprojects\\car-workflow-cloud-app\\target\\car-workflow-cloud-app-0.0.1-SNAPSHOT.jar"
+        jvm_options = ["-Xms256m", "-Xmx512m"]
+        args        = []
+      }
+      resources {
+        cpu    = 100 // 100 MHz
+        memory = 2048 // This is in MB
+      }
+    }
+  }
+}
 ```
 
 <a name="vault"></a>
