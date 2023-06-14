@@ -433,6 +433,16 @@ Check in Nomad post job run<br>
 ![Check in Nomad post job run](docs/aws_ec2_tools_35.png)<br>
 ![Check in Nomad post job run](docs/aws_ec2_tools_36.png)<br>
 Check in Consul post job run<br>
+Ensure the individual SpringBoot app has Consul config<br>
+```yaml
+spring:
+  application:
+    name: car-workflow-cloud-app
+  cloud:
+    consul:              # <----- THIS IS PRESENT
+      host: localhost
+      port: 8501
+```
 ![Check in Consul post job run](docs/aws_ec2_tools_37.png)<br>
 ![Check in Consul post job run](docs/aws_ec2_tools_38.png)<br>
 
