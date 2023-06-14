@@ -308,6 +308,40 @@ instance_public_ip = "3.8.185.176"
 
 <a name="nomad"></a>
 ### Nomad
+#### Install Nomad
+https://developer.hashicorp.com/nomad/downloads?product_intent=nomad
 
+#### Run Nomad
+`nomad agent -dev -config=nomad-config.hcl`
+
+The ``nomad-config.hcl`` file is a [configuration](https://developer.hashicorp.com/nomad/docs/configuration) file that Nomad uses to configure itself.
+
+Example: (here the ports are overridden)
+```shell
+ports {
+  http = 14646
+  rpc  = 14647
+  serf = 14648
+}
+```
+````shell
+C:\Apps\Nomad>nomad agent -dev -config=nomad-config.hcl
+==> Loaded configuration from nomad-config.hcl
+==> Starting Nomad agent...
+==> Nomad agent configuration:
+
+       Advertise Addrs: HTTP: 127.0.0.1:14646; RPC: 127.0.0.1:14647; Serf: 127.0.0.1:14648
+            Bind Addrs: HTTP: [127.0.0.1:14646]; RPC: 127.0.0.1:14647; Serf: 127.0.0.1:14648
+                Client: true
+             Log Level: DEBUG
+                Region: global (DC: dc1)
+                Server: true
+               Version: 1.5.6
+
+==> Nomad agent started! Log data will stream in below:
+````
+Check in Nomad.<br>
+http://localhost:14646/ui/jobs
+![Check in Nomad](docs/aws_ec2_tools_29.png)<br>
 <a name="vault"></a>
 ### Vault
