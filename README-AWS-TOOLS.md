@@ -316,12 +316,23 @@ https://developer.hashicorp.com/nomad/downloads?product_intent=nomad
 
 The ``nomad-config.hcl`` file is a [configuration](https://developer.hashicorp.com/nomad/docs/configuration) file that Nomad uses to configure itself.
 
-Example: (here the ports are overridden)
+Example: 
+1. The ports are overridden
+2. The Consul server is defined
 ```shell
+server {
+  enabled          = true
+}
 ports {
   http = 14646
   rpc  = 14647
   serf = 14648
+}
+client {
+  enabled = true
+}
+consul {
+  address = "localhost:8501"
 }
 ```
 ````shell
@@ -343,5 +354,9 @@ C:\Apps\Nomad>nomad agent -dev -config=nomad-config.hcl
 Check in Nomad.<br>
 http://localhost:14646/ui/jobs
 ![Check in Nomad](docs/aws_ec2_tools_29.png)<br>
+![Check in Nomad](docs/aws_ec2_tools_30.png)<br>
+![Check in Nomad](docs/aws_ec2_tools_31.png)<br>
+![Check in Nomad](docs/aws_ec2_tools_32.png)<br>
+
 <a name="vault"></a>
 ### Vault
