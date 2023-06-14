@@ -316,9 +316,9 @@ https://developer.hashicorp.com/nomad/downloads?product_intent=nomad
 
 The ``nomad-config.hcl`` file is a [configuration](https://developer.hashicorp.com/nomad/docs/configuration) file that Nomad uses to configure itself.
 
-Example: 
+Example (nomad-config.hcl): 
 1. The ports are overridden
-2. A [Consul](#concul) server is defined, for Nomad to register with
+2. A [Consul](#consul) server is defined, for Nomad to register with
 3. Log level at INFO with a specific log file
 4. Data directory for Nomad to store data
 ```shell
@@ -366,7 +366,7 @@ C:\Apps\Nomad>nomad agent -dev -config=nomad-config.hcl
     2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: name=docker type=driver plugin_version=0.1.0
 ````
 
-2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: ***name=java*** type=driver plugin_version=0.1.0
+2023-06-14T14:27:16.206+0100 [INFO]  agent: detected plugin: ***name=java*** type=driver plugin_version=0.1.0<br>
 ***name=java*** tells us that, later, we cant create Nomad jobs with ***driver = "java"*** <br> 
 
 Check in Nomad.<br>
@@ -379,7 +379,7 @@ Check Nomad is registerd on Consul.<br>
 
 #### Run Nomad
 Create a Nomad job file as speified [here](https://developer.hashicorp.com/nomad/docs/job-specification).
-```shell
+````shell
 job "car-workflow-cloud-app-job" {
   datacenters = ["dc1"]
   type        = "service"
@@ -399,7 +399,7 @@ job "car-workflow-cloud-app-job" {
     }
   }
 }
-```
+````
 
 <a name="vault"></a>
 ### Vault
