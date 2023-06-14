@@ -377,14 +377,14 @@ Check Nomad is registerd on Consul.<br>
 ![Check in Nomad on Consul](docs/aws_ec2_tools_31.png)<br>
 ![Check in Nomad on Consul](docs/aws_ec2_tools_32.png)<br>
 
-#### Run Nomad
+#### Run a Nomad job
 Create a Nomad job file as speified [here](https://developer.hashicorp.com/nomad/docs/job-specification).
 ````shell
 job "car-workflow-cloud-app-job" {
   datacenters = ["dc1"]
   type        = "service"
   group "car-workflow-cloud-app-group" {
-    count = 5 // Run 5 instances
+    count = 2 // Run 2 instances
     task "car-workflow-cloud-app" {
       driver = "java" // This can be java. docker etc.
       config {
@@ -393,13 +393,45 @@ job "car-workflow-cloud-app-job" {
         args        = []
       }
       resources {
-        cpu    = 100 // 100 MHz
-        memory = 2048 // This is in MB
+        cpu    = 100 // MHz
+        memory = 1024 // MB
       }
     }
   }
 }
 ````
+As the port is not the default (4646) set the NOMAD_ADDR variable.<br>
+````set NOMAD_ADDR=http://127.0.0.1:14646````<br>
+Then run the nomad job<br>
+````nomad run car-app-cloud-cluster.nomad````<br>
+Check the job logs
+````shell
+C:\gitprojects\devops-tools\src\main\resources\nomad>nomad run car-app-cloud-cluster.nomad
+==> 2023-06-14T15:37:05+01:00: Monitoring evaluation "6f7cdf25"
+    2023-06-14T15:37:05+01:00: Evaluation triggered by job "car-workflow-cloud-app-job"
+    2023-06-14T15:37:06+01:00: Evaluation within deployment: "65d2960f"
+    2023-06-14T15:37:06+01:00: Allocation "43bab04d" created: node "116bc5e1", group "car-workflow-cloud-app-group"
+    2023-06-14T15:37:06+01:00: Allocation "a771e284" created: node "116bc5e1", group "car-workflow-cloud-app-group"
+    2023-06-14T15:37:06+01:00: Evaluation status changed: "pending" -> "complete"
+==> 2023-06-14T15:37:06+01:00: Evaluation "6f7cdf25" finished with status "complete"
+==> 2023-06-14T15:37:06+01:00: Monitoring deployment "65d2960f"
+
+2023-06-14T15:37:06+01:00
+ID          = 65d2960f
+Job ID      = car-workflow-cloud-app-job
+Job Version = 0
+Status      = running
+Description = Deployment is running
+
+Deployed
+Task Group                    Desired  Placed  Healthy  Unhealthy  Progress Deadline
+car-workflow-cloud-app-group  2        2       0        0          2023-06-14T15:47:05+01:00
+````
+Check in Nomad post job run<br>
+![Check in Nomad post job run](docs/aws_ec2_tools_33.png)<br>
+![Check in Nomad post job run](docs/aws_ec2_tools_34.png)<br>
+![Check in Nomad post job run](docs/aws_ec2_tools_35.png)<br>
+![Check in Nomad post job run](docs/aws_ec2_tools_36.png)<br>
 
 <a name="vault"></a>
 ### Vault
