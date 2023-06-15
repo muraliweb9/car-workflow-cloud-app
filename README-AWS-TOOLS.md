@@ -561,4 +561,26 @@ reconstruct the root key, Vault will remain permanently sealed!
 It is possible to generate new unseal keys, provided you have a quorum of
 existing unseal keys shares. See "vault operator rekey" for more information.
 ```
-This gives you 5 unseal tokens and 1 root token.
+This gives you 5 unseal tokens and 1 root token. key 1-5 and root_token will display the actual token. Deleted here.<br>
+
+Check the vault status using ``vault status``
+```shell
+C:\gitprojects\devops-tools\src\main\resources\vault>vault status
+Key                Value
+---                -----
+Seal Type          shamir
+Initialized        true
+Sealed             true
+Total Shares       5
+Threshold          3
+Unseal Progress    0/3
+Unseal Nonce       n/a
+Version            1.13.3
+Build Date         2023-06-06T18:12:37Z
+Storage Type       file
+HA Enabled         false
+```
+This shows that the vault is "Sealed" ``Sealed             true`` and the needs 3 unseal keys to unseal ``Unseal Progress    0/3``.
+A vault needs to be unsealed in order to interaction with it via the API.
+
+
