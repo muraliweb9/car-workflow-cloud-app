@@ -532,3 +532,33 @@ C:\Apps\Vault>vault server -config vault-config.hcl
 2023-06-15T18:47:22.263+0100 [INFO]  proxy environment: http_proxy="" https_proxy="" no_proxy=""
 2023-06-15T18:47:22.264+0100 [INFO]  core: Initializing version history cache for core
 ````
+
+#### Initialize Vault
+In a cmd window<br>
+```shell
+set VAULT_ADDR=https://127.0.0.1:8200
+set VAULT_CACERT=my-vault-cert.pem
+vault operator init
+```
+This should output<br>
+```shell
+Unseal Key 1: <key 1>
+Unseal Key 2: <key 2>
+Unseal Key 3: <key 3>
+Unseal Key 4: <key 4>
+Unseal Key 5: <key 5>
+
+Initial Root Token: <root_token>
+
+Vault initialized with 5 key shares and a key threshold of 3. Please securely
+distribute the key shares printed above. When the Vault is re-sealed,
+restarted, or stopped, you must supply at least 3 of these keys to unseal it
+before it can start servicing requests.
+
+Vault does not store the generated root key. Without at least 3 keys to
+reconstruct the root key, Vault will remain permanently sealed!
+
+It is possible to generate new unseal keys, provided you have a quorum of
+existing unseal keys shares. See "vault operator rekey" for more information.
+```
+This gives you 5 unseal tokens and 1 root token.
