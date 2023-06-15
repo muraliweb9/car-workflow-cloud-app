@@ -612,31 +612,98 @@ HA Enabled      false
 This ``Sealed          false`` indicated that the vault is unsealed.
 
 #### Create a Vault policy
-
-<p class="codeblock-label">test.md</p>
-
-```markdown
-My ![foo bar](/path/to/train.jpg "title" )
-```
-
-<p class="codeblock-label">test.md</p>
-```markdown
-My ![foo bar](/path/to/train.jpg "title" )
-```
-
-
-<p class="codeblock-label">test.md</p>
-```shell
+Create ``read-only-policy.hcl`` file<br>
+```hcl
 path "secret/kv/murali/readonly" {
   capabilities = ["read"]
 }
+````
 
-```
-```bash
+Create ``admin-policy.hcl`` file<br>
+```hcl
 path "secret/kv/murali/*" {
   capabilities = ["create", "update", "delete"]
 }
 ```
+
+Validate and format the policy files<br>
+```hcl
+vault policy fmt admin-policy.hcl
+vault policy fmt read-only-policy.hcl
+```
+
+Write the policy(s) to vault<br>
+```hcl
+vault policy write admin-policy admin-policy.hcl
+vault policy write read-only-policy read-only-policy.hcl
+```
+List the policy(s) and read the details<br>
+```hcl
+vault policy list
+vault policy read admin-policy
+vault policy read read-only-policy
+```
+You should see<br>
+```hcl
+C:\Apps\Vault>vault policy list
+admin-policy
+default
+read-only-policy
+root
+```
+```hcl
+C:\Apps\Vault>vault policy read admin-policy
+path "secret/kv/murali/*" {
+  capabilities = ["create", "update", "delete"]
+}
+```
+
+
+# Write up these
+
+```hcl
+vault secrets enable -path=secret/ kv-v2
+
+vault secrets list
+
+ 
+
+vault token create -policy=admin-policy
+
+ 
+
+C:\Apps\Vault>vault token create -policy=admin-policy
+
+ 
+
+vault login new_token
+
+ 
+
+vault kv put secret/kv/murali First=Murali Last=Karunanithy Country=UK
+
+ 
+
+vault kv get secret/kv/murali
+
+vault policy delete admin-policy
+
+ 
+
+vault token revoke new token
+
+ 
+
+vault secrets disable secret/
+
+ 
+
+vault secrets list
+```
+
+# Till here
+
+
 #### Create a token for a policy
 
 #### Create a token for a policy
