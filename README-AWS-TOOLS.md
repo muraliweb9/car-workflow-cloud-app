@@ -449,3 +449,86 @@ spring:
 
 <a name="vault"></a>
 ### Vault
+#### Install Vault
+https://developer.hashicorp.com/vault/downloads
+
+#### Create TLS Keys 
+The private and public keys generated to enable HTTPS, must be in **PEM** format.<br>
+Vault requires subjectAltName in the keys<br>
+Create a file called san.cnf with the following content
+```shell
+[req]
+default_bits  = 2048
+distinguished_name = req_distinguished_name
+req_extensions = req_ext
+x509_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+countryName = XX
+stateOrProvinceName = N/A
+localityName = N/A
+organizationName = Self-signed certificate
+commonName = 120.0.0.1: Self-signed certificate
+[req_ext]
+subjectAltName = @alt_names
+[v3_req]
+subjectAltName = @alt_names
+[alt_names]
+IP.1 = 127.0.0.1
+```
+Then run the following openssh command to generate the private and public keys.
+``openssl req -x509 -newkey rsa:4096 -nodes -out my-vault-cert.pem -keyout my-vault-key.pem -config san.cnf -days 3650``
+Ensure that ```-config san.cnf``` is pointing to  the san.cnf created above.
+This will generate the public key ``my-vault-cert.pem`` and private key ``my-vault-key.pem``.
+
+#### Run Vault
+Create the Vault run config file e.g.``vault-config.hcl``
+The ``vault-config.hcl`` file is a [configuration](https://developer.hashicorp.com/vault/docs/configuration) file that Nomad uses to configure itself.
+Here the storage in specified as file so is persistent across server restarts<br>
+UI is enabled<br>
+TLS is enabled and the private and public key specified above are listed<br>
+```shell
+ui = true # UI @ 127.0.0.1:8200/ui
+
+disable_mlock = true
+
+storage "file" {
+  path = "vault-data"
+}
+
+listener "tcp" {
+  address       = "127.0.0.1:8200"
+  tls_disable   = false
+  tls_cert_file = "my-vault-cert.pem"
+  tls_key_file  = "my-vault-key.pem"
+}
+
+api_addr = "https://127.0.0.1:8200"
+cluster_addr = "https://127.0.0.1:8201"
+```
+
+Then start the Vault server (pointing it to the vault-config.hcl created above)
+``vault server -config vault-config.hcl``
+
+````shell
+C:\Apps\Vault>vault server -config vault-config.hcl
+==> Vault server configuration:
+
+             Api Address: https://127.0.0.1:8200
+                     Cgo: disabled
+         Cluster Address: https://127.0.0.1:8201
+   Environment Variables: , , ALLUSERSPROFILE, APPDATA, COMPUTERNAME, ComSpec, CommonProgramFiles, CommonProgramFiles(x86), CommonProgramW6432, DriverData, GODEBUG, HOMEDRIVE, HOMEPATH, IntelliJ IDEA Community Edition, JAVA_HOME, LOCALAPPDATA, LOGONSERVER, M2_HOME, NUMBER_OF_PROCESSORS, OS, OneDrive, OneDriveConsumer, PATHEXT, PROCESSOR_ARCHITECTURE, PROCESSOR_IDENTIFIER, PROCESSOR_LEVEL, PROCESSOR_REVISION, PROMPT, PSModulePath, PUBLIC, Path, ProgramData, ProgramFiles, ProgramFiles(x86), ProgramW6432, SESSIONNAME, SystemDrive, SystemRoot, TEMP, TMP, USERDOMAIN, USERDOMAIN_ROAMINGPROFILE, USERNAME, USERPROFILE, ZES_ENABLE_SYSMAN, windir
+              Go Version: go1.20.4
+              Listener 1: tcp (addr: "127.0.0.1:8200", cluster address: "127.0.0.1:8201", max_request_duration: "1m30s", max_request_size: "33554432", tls: "enabled")
+               Log Level:
+                   Mlock: supported: false, enabled: false
+           Recovery Mode: false
+                 Storage: file
+                 Version: Vault v1.13.3, built 2023-06-06T18:12:37Z
+             Version Sha: 3bedf816cbf851656ae9e6bd65dd4a67a9ddff5e
+
+==> Vault server started! Log data will stream in below:
+
+2023-06-15T18:47:22.263+0100 [INFO]  proxy environment: http_proxy="" https_proxy="" no_proxy=""
+2023-06-15T18:47:22.264+0100 [INFO]  core: Initializing version history cache for core
+````
