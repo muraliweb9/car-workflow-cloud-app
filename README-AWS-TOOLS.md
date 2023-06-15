@@ -613,7 +613,9 @@ This ``Sealed          false`` indicated that the vault is unsealed.
 
 #### Create a Vault policy
 
-```shell {id="python-print" class="blue large" data-filename="test.py"}
+<p class="codeblock-label">test.md</p>
+
+```shell
 path "secret/kv/murali/readonly" {
   capabilities = ["read"]
 }
