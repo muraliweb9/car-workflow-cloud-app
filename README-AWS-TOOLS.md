@@ -476,10 +476,10 @@ subjectAltName = @alt_names
 [alt_names]
 IP.1 = 127.0.0.1
 ```
-Then run the following openssh command to generate the private and public keys.
-``openssl req -x509 -newkey rsa:4096 -nodes -out my-vault-cert.pem -keyout my-vault-key.pem -config san.cnf -days 3650``
-Ensure that ```-config san.cnf``` is pointing to  the san.cnf created above.
-This will generate the public key ``my-vault-cert.pem`` and private key ``my-vault-key.pem``.
+Then run the following openssh command to generate the private and public keys.<br>
+``openssl req -x509 -newkey rsa:4096 -nodes -out my-vault-cert.pem -keyout my-vault-key.pem -config san.cnf -days 3650``<br>
+Ensure that ```-config san.cnf``` is pointing to  the san.cnf created above.<br>
+This will generate the public key ``my-vault-cert.pem`` and private key ``my-vault-key.pem``.<br>
 
 #### Run Vault
 Create the Vault run config file e.g.``vault-config.hcl``
@@ -507,7 +507,7 @@ api_addr = "https://127.0.0.1:8200"
 cluster_addr = "https://127.0.0.1:8201"
 ```
 
-Then start the Vault server (pointing it to the vault-config.hcl created above)
+Then start the Vault server (pointing it to the vault-config.hcl created above)<br>
 ``vault server -config vault-config.hcl``
 
 ````shell
