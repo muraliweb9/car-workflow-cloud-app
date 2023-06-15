@@ -477,7 +477,9 @@ subjectAltName = @alt_names
 IP.1 = 127.0.0.1
 ```
 Then run the following openssh command to generate the private and public keys.<br>
-``openssl req -x509 -newkey rsa:4096 -nodes -out my-vault-cert.pem -keyout my-vault-key.pem -config san.cnf -days 3650``<br>
+```shell
+openssl req -x509 -newkey rsa:4096 -nodes -out my-vault-cert.pem -keyout my-vault-key.pem -config san.cnf -days 3650
+```
 Ensure that ```-config san.cnf``` is pointing to  the san.cnf created above.<br>
 This will generate the public key ``my-vault-cert.pem`` and private key ``my-vault-key.pem``.<br>
 
@@ -583,4 +585,45 @@ HA Enabled         false
 This shows that the vault is "Sealed" ``Sealed             true`` and the needs 3 unseal keys to unseal ``Unseal Progress    0/3``.
 A vault needs to be unsealed in order to interaction with it via the API.
 
+#### Unseal the Vault
+```shell
+set VAULT_TOKEN=<root_token>
+vault operator unseal <unseal_key_1>
+vault operator unseal <unseal_key_2>
+vault operator unseal <unseal_key_3>
+```
+Check the vault status
+```shell
+C:\gitprojects\devops-tools\src\main\resources\vault>vault status
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    5
+Threshold       3
+Version         1.13.3
+Build Date      2023-06-06T18:12:37Z
+Storage Type    file
+Cluster Name    vault-cluster-06400554
+Cluster ID      e58e0344-d1d6-4f64-06b0-5fb7c0b4aa67
+HA Enabled      false
+```
+This ``Sealed          false`` indicated that the vault is unsealed.
 
+#### Create a Vault policy
+
+```shell {id="python-print" class="blue large" data-filename="test.py"}
+path "secret/kv/murali/readonly" {
+  capabilities = ["read"]
+}
+
+```
+```bash
+path "secret/kv/murali/*" {
+  capabilities = ["create", "update", "delete"]
+}
+```
+#### Create a token for a policy
+
+#### Create a token for a policy
