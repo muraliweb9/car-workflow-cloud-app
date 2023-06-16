@@ -779,7 +779,7 @@ cubbyhole/    cubbyhole    cubbyhole_d0ffd980    per-token private secret storag
 identity/     identity     identity_a3d1e351     identity store
 sys/          system       system_5698ee91       system endpoints used for control, policy and debugging
 ```
-Delete a policy and ensure it does not exits<br>
+Delete a policy and ensure it does not exist<br>
 ```hcl
 C:\Apps\Vault>vault policy delete admin-policy
 Success! Deleted policy: admin-policy
