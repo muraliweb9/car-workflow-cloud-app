@@ -657,53 +657,138 @@ path "secret/kv/murali/*" {
   capabilities = ["create", "update", "delete"]
 }
 ```
-
-
-# Write up these
-
+#### Create a Vault secret
+Create a secret in Vault for a particular path and type<br>
 ```hcl
-vault secrets enable -path=secret/ kv-v2
-
-vault secrets list
-
- 
-
-vault token create -policy=admin-policy
-
- 
-
-C:\Apps\Vault>vault token create -policy=admin-policy
-
- 
-
-vault login new_token
-
- 
-
-vault kv put secret/kv/murali First=Murali Last=Karunanithy Country=UK
-
- 
-
-vault kv get secret/kv/murali
-
-vault policy delete admin-policy
-
- 
-
-vault token revoke new token
-
- 
-
-vault secrets disable secret/
-
- 
-
-vault secrets list
+C:\Apps\Vault>vault secrets enable -path=secret/ kv-v2
+Success! Enabled the kv-v2 secrets engine at: secret/
+```
+Then validate that it has been created in Vault<br>
+```hcl
+C:\Apps\Vault>vault secrets list
+Path          Type         Accessor              Description
+----          ----         --------              -----------
+cubbyhole/    cubbyhole    cubbyhole_d0ffd980    per-token private secret storage
+identity/     identity     identity_a3d1e351     identity store
+secret/       kv           kv_85967983           n/a
+sys/          system       system_5698ee91       system endpoints used for control, policy and debugging
 ```
 
-# Till here
+Now that a secrets has been created in path ``secret/`` the ``path`` in the poicy(s) ``admin-policy`` and ``read-only-policy``
+i.e. these stanza(s) ``path "secret/kv/murali/*"`` and ``path "secret/kv/murali/readonly"`` associate a policy with a key value store in a path.
+#### Create a token with the new policy
+A token is like a username, in that it can be used to login. So as there is a secret engine in a path and a policy for the path. Creating a token is like creating a user with access to that policy, which allows an action (read, write, update, delete etc.) on that secret in that path.
+
+#### Create a new token in Vault and login to Vault
+Create a new token for a policy<br>
+```hcl
+C:\Apps\Vault>vault token create -policy=admin-policy
+Key                  Value
+---                  -----
+token                <new token for policy>
+token_accessor       RLkSejNEWPvHQ0hKBSsSSlql
+token_duration       768h
+token_renewable      true
+token_policies       ["admin-policy" "default"]
+identity_policies    []
+policies             ["admin-policy" "default"]```
+```
+Login to Vault with the new token, and validate that the policy exits<br>
+```hcl
+C:\Apps\Vault>>vault login <new token for policy>
+
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                <new token for policy>
+token_accessor       <token accessor>
+token_duration       767h58m51s
+token_renewable      true
+token_policies       ["admin-policy" "default"]
+identity_policies    []
+policies             ["admin-policy" "default"]
+```
+
+#### Interact with the Vault secret
+Put some key value pairs in secret path ``secret/kv/murali``<br>
+```hcl
+C:\Apps\Vault>vault kv put secret/kv/murali First=Mura Last=Karu Country=UK Location=London
+==== Secret Path ====
+secret/data/kv/murali
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2023-06-16T05:48:47.8513303Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+```
+Retrieve the values in secret path ``secret/kv/murali``<br>
+```hcl
+C:\Apps\Vault>vault kv get secret/kv/murali
+==== Secret Path ====
+secret/data/kv/murali
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2023-06-16T05:48:47.8513303Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+====== Data ======
+Key         Value
+---         -----
+Country     UK
+First       Mura
+Last        Karu
+Location    London
+```
+
+#### Clean up the vault
+Revoke a token and try to login with that token<br>
+```hcl
+C:\Apps\Vault>vault token revoke <new_token>
+Success! Revoked token (if it existed)
+
+C:\Apps\Vault>vault login <new_token>
+Error authenticating: error looking up token: Error making API request.
+
+URL: GET https://127.0.0.1:8200/v1/auth/token/lookup-self
+Code: 403. Errors:
+
+* permission denied
+```
+
+Disable a secret and check it is not in the secrets list<br>
+```hcl
+C:\Apps\Vault>vault secrets disable secret/
+Success! Disabled the secrets engine (if it existed) at: secret/
+
+C:\Apps\Vault>vault secrets list
+Path          Type         Accessor              Description
+----          ----         --------              -----------
+cubbyhole/    cubbyhole    cubbyhole_d0ffd980    per-token private secret storage
+identity/     identity     identity_a3d1e351     identity store
+sys/          system       system_5698ee91       system endpoints used for control, policy and debugging
+```
+Delete a policy and ensure it does not exits<br>
+```hcl
+C:\Apps\Vault>vault policy delete admin-policy
+Success! Deleted policy: admin-policy
+
+C:\Apps\Vaultt>vault policy list
+default
+read-only-policy
+root
+```
 
 
-#### Create a token for a policy
 
-#### Create a token for a policy
